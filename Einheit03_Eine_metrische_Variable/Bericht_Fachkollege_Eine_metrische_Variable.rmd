@@ -1,0 +1,93 @@
+---
+title: "Bericht (für Fachkollegen)"
+author: "David Meyer"
+date: "22.\\ April 2016"
+output: pdf_document
+---
+
+# Ausgangssituation
+
+Zur Untersuchung gelangte eine Stichprobe mit 22 Beobachtungen, davon
+ein fehlender Wert. Erhoben wurde ein metrisches Merkmal
+(_Bugfixdauer_ in Minuten). Vermutet wird eine mittlere Dauer von
+170 Minuten in der Population.
+
+# Datenmanagement
+
+Die Daten werden mit `scan()` eingelesen:
+
+```{r}
+dauer = scan("../bugfix.txt",
+             na.strings = "??")
+head(dauer)
+```
+
+Die Anzahl der Beobachtungen beträgt:
+```{r}
+length(dauer)
+```
+
+```{r}
+sum(is.na(dauer))
+```
+Von den 22 Werten ist einer fehlend.
+
+# Deskriptive Beurteilung
+
+Die Daten werden mittels Histogramm und Boxplot visualisiert:
+```{r}
+hist(dauer, freq = F)
+rug(dauer)
+boxplot(dauer, horizontal = TRUE)
+```
+
+Die 5-Punkt-Zusammenfassung liefert:
+
+```{r}
+summary(dauer)
+```
+
+Im Boxplot ist je ein Ausreißer außerhalb des linken und rechten "inner fence"
+erkennbar. Da das Histogramm dadurch verzerrt sein könnte, wird es ohne Ausreißer nochmals gezeichnet:
+
+```{r}
+dauer2 = dauer[dauer > 70 & dauer < 200]
+hist(dauer2, freq = FALSE)
+rug(dauer2)
+```
+
+Die Verteilung sieht mehrgipfelig aus (Häufungspunkte in den Bereichen [150, 160] und [170, 190]). Die Daten sind eher im rechen Bereich (ab 170) konzentriert.
+
+Dem
+Boxplot entnimmt man ebenfalls, dass die Verteilung linksschief ist (Median in
+den rechten Bereich der Box verschoben). 50\% der Daten liegen im
+Bereich 159 bis 178 (Boxgrenzen = 1. und 3. Quartil), der Median bei
+174. Aufgrund der Schiefe weicht er deutlich vom arithmetischen Mittel
+(167.2) ab.
+Die beiden Ausreißer bilden Minimum (66) und Maximum (207) der
+Verteilung, die Spannbreite daher 141.
+
+```{r}
+sd(dauer, na.rm = TRUE)
+mad(dauer, na.rm = TRUE)
+```
+
+Das Merkmal hat eine Standardabweichung von 27.46 vom Mittel 167.2, das
+robuste Streumaß Medmed (Median der Abweichungen vom Median) beträgt
+hingegen nur 19.27. Die Standardabweichung ist durch die Ausreißer
+stark verzerrt.
+
+# Rückschluss auf die Grundgesamtheit
+
+Aufgrund der Ausreißer kann kein Konfidenzintervall für den Mittelwert
+ermittelt bzw. _t_-Test durchgeführt werden. Stattdessen wird ein
+Wilcoxon-Test mit der Nullhypothese: "der Median in der Population
+beträgt 170" auf dem Signifikanzniveau von 0.05 durchgeführt:
+```{r}
+wilcox.test(dauer, mu = 170, conf.int = TRUE)
+```
+Der P-Wert beträgt 0.93, weit über dem Signifikanzniveau - die
+Nullhypothese kann daher nicht verworfen werden. Aufgrund des deutlichen Ergebnisses kann die Warnmeldung (Nicht-exakter P-Wert aufgrund von Mehrfachwerten) ignoriert werden. Ein Konfidenzintervall
+für den Median beträgt [164, 178.5] - in diesem kann der wahre Median vermutet werden, ohne dass die vorliegenden Daten dagegen sprechen. Es enthält insbesondere die vermuteten 170 Minuten.
+
+**Fazit:** Die Daten sprechen nicht gegen die Annahme, dass der Median der Bugfixdauer in der Grundgesamtheit (alle Bugs) 170 Minuten beträgt.

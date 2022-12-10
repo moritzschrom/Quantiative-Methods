@@ -1,0 +1,147 @@
+---
+title: "Wiederholung der 04"
+author: "Michael Fischer"
+date: "01.\\ Dezember 2022"
+output: pdf_document
+---
+# Arbeitsort
+wie immer
+
+```{r}
+# library(here)
+# here()
+# setwd(here())
+```
+
+# Datenimport
+Es handelt sich um eine csv. Statt scan() verwenden wir also read.table. Es gibt keine fehlenden Werte
+```{r}
+daten=read.table("infos.csv",
+                     sep = ",", header = TRUE)
+head(daten)
+any(is.na(daten))
+dim(daten)
+summary(daten)
+```
+
+# Eine metrische Variable
+Analysieren wir Alter und Dienstjahre einzeln (todo für euch)
+```{r}
+summary(daten$Alter)
+boxplot(daten$Alter, horizontal = TRUE)
+```
+
+Zuerst könnt ihr zwei neue Listen definieren, damit wir nicht immer daten$Alter tippen müssen
+```{r}
+age <- daten$Alter
+time <- daten$Dienstjahre
+
+print("Alter")
+summary(age)
+
+print("Dienstjahre")
+summary(time)
+```
+
+
+Die Anzahl der Beobachtungen, sowie Nullwerte:
+
+```{r}
+print("Alter")
+length(age)
+sum(is.na(age))
+
+print("Dienstjahre")
+length(time)
+sum(is.na(time))
+```
+
+Visualisierung mit Histrogramm und Boxplot
+
+```{r}
+hist(age, freq = F)
+rug(age)
+boxplot(age, horizontal = TRUE)
+```
+
+
+```{r}
+hist(time, freq = F)
+rug(time)
+boxplot(time, horizontal = TRUE)
+```
+
+# wieder die grobe Alterseinteilung
+
+```{r}
+altergrob <- cut(daten$Alter,
+                 breaks = c(min(daten$Alter)-1, 25, 42, 58, max(daten$Alter)+1),
+                 labels = c("Gen Z", "Gen X", "Gen Y", "Boomer"),
+                 ordered = TRUE)
+any(is.na(altergrob))
+daten <- cbind(daten, Altersgruppe = altergrob)
+head(daten)
+```
+
+# Unabhängigkeit/Homogenität
+Sind die groben Altersgruppen gleich auf die beiden Arbeitsstandorte verteilt? Anders gefragt, gibt es einen Zusammenhang zwischen dem Standort und der Altersgruppe? n (0.5%-Signifikanzniveau)? Welches Forschungsproblem (Unabhängigkeit oder Homogenität) liegt hier vor und warum? Begründet und führt nur jene Analyse durch, die für euch sinnvoller erscheint!
+
+# zwei metrische Variablen
+
+Wiederholen wir nun die grundsätzliche Idee, sehen wir einen Zusammenhang?
+```{r}
+plot(Alter ~ Dienstjahre, data=daten)
+#oder kurz plot(age ~ time)
+```
+Das wirkt wie ein linearer Zusammenhang (macht ja auch Sinn, oder?). Verwenden wir Pearson und Spearman
+```{r}
+#Pearson:
+with(daten, cor(Alter, Dienstjahre))
+with(daten, cor(Alter, Dienstjahre, method = "spearman"))
+```
+
+Interpretiert die Ergebnisse!
+
+```{r}
+#Lineare Regression
+model <- lm(Dienstjahre ~ Alter, data = daten)
+model
+round(coef(model), 5)
+```
+
+Lassen sich die Koeffizienten erklären?
+
+# Modelldiagnostig
+Wie 'gut' sind unsere Parameter
+```{r}
+round(coef(model), 5)
+summary(model)
+
+qqnorm(residuals(model))
+qqline(residuals(model), col = "red")
+
+plot(residuals(model) ~ fitted(model), main = "Residuenstruktur",
+xlab = "Geschätzte Werte", ylab = "Residuen")
+```
+
+Wie lassen sich die Werte in der Tabelle sowie die Grafiken lesen?
+
+# Verwendung des Modells
+Schätzen wir nun Werte mit Hilfe unseres Modells. Wenn jemand 80, 40 oder 10 Jahre alt ist, wie viele Dienstjahre hat die Person dann vermutlich in unserer Firma? Hinterfragt die Antwort
+```{r}
+newages = data.frame(Alter = c(10, 40, 80))
+newages
+predict(model, newages)
+```
+
+Geben wir dazu auch die Konfidenzintervalle an
+```{r}
+predict(model, newages, interval = "confidence")
+```
+
+# 9.3 Ansätze für mehr als zwei Variablen
+Vorbereiten!
+
+```{r}
+pairs(daten, panel = panel.smooth)
+```

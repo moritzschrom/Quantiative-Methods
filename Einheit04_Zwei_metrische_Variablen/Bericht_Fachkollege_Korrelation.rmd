@@ -1,0 +1,127 @@
+---
+title: "Bericht (für Fachkollegen)"
+author: "David Meyer"
+date: "22\\. Mai 2019"
+lang: DE
+output: pdf_document
+---
+
+# Ausgangssituation
+
+In einer Softwareentwicklungsfirma wurden für 21 Bugs vier metrische Merkmale erhoben:
+
+- Behebungsdauer in Minuten (_dauer_)
+- Anzahl der Codezeilen (_codelines_)
+- Anzahl der Use Cases (_usecases_)
+- Alter des Programmierers (_alter_)
+
+Ziel der Untersuchung ist der Nachweis eines möglichen (linearen) Zusammenhangs
+zwischen der Behebungsdauer und der Programmgröße (Codezeilenanzahl).
+
+# Datenmanagement
+
+Die Daten wurden mit `read.table()` eingelesen:
+
+```{r}
+bugfixes = read.table("../bugfixes.csv", header = TRUE)
+head(bugfixes)
+```
+
+5-Punkt-Zusammenfassung:
+
+```{r}
+summary(bugfixes)
+```
+
+Stichprobengröße, fehlende Werte:
+
+```{r}
+nrow(bugfixes)
+sum(complete.cases(bugfixes))
+```
+
+**Datensteckbrief:**
+
+Es steht ein Datensatz mit 21 Beobachtungen und 4 metrischen Merkmalen (`dauer`, `usecases`, `codelines`, `alter`) zur Verfügung. Es fehlen keine Werte.
+
+# Übersicht
+
+```{r boxdauer, echo = FALSE, fig.cap = "Boxplot von \\emph{dauer}", fig.align = "center"}
+boxplot(bugfixes$dauer, horizontal = TRUE)
+```
+
+Die Verteilung von _dauer_ wird mit einem Boxplot dargestellt (siehe
+Abbildung \ref{fig:boxdauer}). Die Fünf-Punkt-Zusammenfassung ergibt:
+
+```{r}
+summary(bugfixes$dauer)
+```
+
+Die Verteilung ist linksschief, der kleinste Wert (120 Minuten) und der
+größte Wert (207 Minuten) sind als Ausreißer an den Rändern zu
+erkennen. Der Median liegt bei 174 Minuten, der Medmed bei
+`r mad(bugfixes$dauer)`. Der Mittelwert liegt bei 169.8 und weicht deutlich vom Median ab -- er wird durch die Schiefe der Verteilung verzerrt.
+
+```{r boxcodelines, echo = FALSE, fig.cap = "Boxplot von \\emph{codelines}", fig.align = "center"}
+boxplot(bugfixes$codelines, horizontal = TRUE)
+```
+
+Der Boxplot von _codelines_ ist in Abbildung \ref{fig:boxcodelines} dargestellt, die Verteilung ist symmetrisch und weist keine
+Auffälligkeiten auf. Die 5-Punkt-Zusammenfassung lautet:
+
+```{r}
+summary(bugfixes$codelines)
+```
+
+Der Median liegt demnach bei 364000, der Medmed ergibt sich zu
+`r format(mad(bugfixes$codelines))`.
+
+# Deskriptive Analyse
+
+Die gemeinsame Verteilung von _dauer_ und _codelines_ wird in einem
+Streudiagramm (siehe Abbildung \ref{fig:streudiagramm}) dargestellt:
+
+```{r streudiagramm, fig.height = 7, fig.width = 7, out.width="0.7\\textwidth", fig.align = "center", fig.cap = "Streudiagramm von \\emph{dauer} und \\emph{codelines}"}
+plot(dauer ~ codelines, data = bugfixes,
+     main = "Dauer in Abhängigkeit von Codelines (N=21)")
+```
+
+Das Diagramm lässt eine positive Korrelation zwischen den beiden
+Merkmalen vermuten. Der Wert des Pearsonschen
+Korrelationskoeffizienten liegt bei
+`r round(cor(bugfixes$dauer, bugfixes$codelines), 2)`
+(mäßige, positive Korrelation). Aufgrund der starken Streuung wird als robustes Maß auch die Korrelation nach Spearman (basierend auf Rängen) ermittelt, sie beträgt:
+`r round(cor(bugfixes$dauer, bugfixes$codelines, method = "spearman"), 2)` (eher schwache Korrelation).
+
+# Hypothesentest
+
+Um diese Hypothese zu überprüfen, führen wir einen Test auf
+Unkorreliertheit durch (Signifikanzniveau: 0.05) - zunächst für die Korrelation nach Pearson, anschließend für jende nach Spearman. Die Nullhypothese
+lautet jeweils: die Korrelation in der Population beträgt 0, die Alternative:
+sie ist ungleich 0.
+
+## Korrelation nach Pearson:
+
+```{r}
+cor.test(~ dauer + codelines, data = bugfixes)
+```
+
+Die P-Wert beträgt 0.0094 und liegt unter dem Signifikanzniveau von
+0.05. Die Nullhypothese muss demnach verworfen werden: die Daten sprechen für eine Korrelation (nach Pearson). Das
+95%-Konfidenzintervall beträgt [0.157, 0.794], die Schätzung von 0.55
+ist damit sehr ungenau: der Bereich lässt Werte von "nicht korreliert"
+bis "stark korreliert" zu.
+
+## Korrelation nach Spearman:
+
+```{r}
+cor.test(~ dauer + codelines, data = bugfixes,
+         method = "spearman", )
+```
+
+Die P-Wert beträgt 0.06 und liegt knapp über dem Signifikanzniveau von
+0.05. Die Nullhypothese kann demnach nicht verworfen werden. Die Daten sprechen nicht für eine Korrelation (nach Spearman).
+
+**Fazit:**
+
+Bei Verwendung eines robusten Korrelationsmaßes kann kein Zusammenhang zwischen der Programmgröße und der Bugfixdauer nachgewiesen werden. Bei der Korrelation nach Pearson ist der Zusammenhang schwach und die Schätzung -- aufgrund des geringen Stichprobenumfangs und der hohem Streuung -- sehr ungenau.

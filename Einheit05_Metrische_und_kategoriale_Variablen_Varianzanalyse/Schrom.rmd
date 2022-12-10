@@ -1,0 +1,161 @@
+---
+title: "Uebung zur Einheit 05"
+author: "Moritz Schrom"
+date: "06.\\ Dezember 2022"
+output: pdf_document
+---
+# Datenimport
+Importieren Sie den Datensatz als "daten", der Ihrem Namen entspricht. Die Spalten entsprechen Name, Leistung (in Watt), Preis (in Euro) und Ladezeit (in Minuten). Die angegebene Zeit in Minuten ist der  Mittelwert von Messungen mit drei verschiedenen Mobiltelefonen
+```{r}
+daten <- read.table(file="Schrom.txt", sep = "|")
+daten
+```
+
+# Datenbereinigung
+Überprüfen Sie, ob Ihr Datensatz vollständig ist. Wenn nicht, entfernen Sie die Daten. Gehen Sie dabei wie im Skript zu Data frames vor, Seite 76 und insbesondere 77. Hinweis: Eventuell enthält Ihr Datenfile fehlende Werte. Wenden Sie die summary()-Funktion auf den Data Frame an, um die Anzahl der vollständigen bzw. unvollständigen Beobachtungen für jede Variable zu bestimmen. Benutzen Sie danach complete.cases() und subset(), um die unvollständigen zu entfernen.
+
+
+```{r}
+summary(daten)
+```
+
+Ein fehlender Wert bei "Leistung".
+
+## Alternative zu summary am Beispiel Leistung
+```{r}
+leistung <- daten$leistung
+sum(is.na(leistung))
+```
+
+Unvollständige Werte entfernen
+
+```{r}
+daten <- daten[complete.cases(daten), ]
+summary(daten)
+```
+
+# Eine metrische Variable
+Analysieren Sie kurz die drei metrischen Variablen mittels Boxplot.
+```{r}
+boxplot(daten$leistung, horizontal = TRUE)
+boxplot(daten$preis, horizontal = TRUE)
+boxplot(daten$zeit, horizontal = TRUE)
+```
+
+
+# Korrelationskoeffizient und Modelüberlegungen
+Untersuchen Sie, ob eine Korrelation zwischen Zeit und Leistung sowie Zeit und Preis existiert.
+
+Visualisierung der Daten als Plot.
+```{r}
+zeit <- daten$zeit
+leistung <- daten$leistung
+preis <- daten$preis
+plot(zeit ~ leistung, data=daten)
+plot(zeit ~ preis, data=daten)
+```
+
+Sehen Sie einen linearen Zusammenhang zwischen Zeit und Leistung?
+
+Ich sehe keinen linearen Zusammenhang. Der Pearson und Spearman Test bestätigen.
+
+```{r}
+# Pearson:
+with(daten, cor(zeit, leistung))
+
+# Spearman:
+with(daten, cor(zeit, leistung, method = "spearman"))
+```
+
+Der Spearman Test ergibt fast eine geringe negative Korrelation (noch > -0.3). Wieso? Da statt Werten die Rangordnung genommen wird, ist er gegen die extremen Ausreiser (Siehe Plot) nicht so anfällig...
+
+Sehen Sie einen linearen Zusammenhang zwischen Zeit und Preis?
+
+Ich sehe keinen linearen Zusammenhang. Der Pearson und Spearman Test bestätigen:
+
+```{r}
+# Pearson:
+with(daten, cor(zeit, preis))
+
+# Spearman:
+with(daten, cor(zeit, preis, method = "spearman"))
+```
+
+# Modellierung
+## Model aufstellen
+Stellen Sie ein model1 auf zwischen Zeit und Leistung
+```{r}
+
+#Lineare Regression
+model <- lm(zeit ~ leistung, data = daten)
+model
+round(coef(model), 5)
+```
+
+
+## Modelldiagnostik
+Wie 'gut' sind unsere Parameter? Testen und Diskutieren Sie das Model
+
+```{r}
+round(coef(model), 5)
+summary(model)
+
+qqnorm(residuals(model))
+qqline(residuals(model), col = "red")
+
+plot(residuals(model) ~ fitted(model), main = "Residuenstruktur",
+     xlab = "Geschätzte Werte", ylab = "Residuen")
+```
+
+Es ist kein Muster in der Residuenstruktur zu sehen.
+
+Die summary Funktion zeigt: leistung hat einen Signifikanzcode von > 0,1 und ist nicht signifikant (0.1-Signifikanzniveau).
+
+Unser R-Squared ist 0.003476 - Das Modell erklärt 0,3 Prozent der Varianz der Zeit...
+
+## Verwendung des Modells
+Schätzen Sie, wie lange es bei Leistung 5,5 Watt dauert, die Mobilgeräte zu laden. Geben Sie dazu ein Konfidenzintervall an. Hinweis: predict() und Skript Seite 179
+```{r}
+newleistung <- data.frame(leistung = 5.5)
+newleistung
+predict(model, newleistung)
+```
+
+Zeit laut Modeel bei 5,5W ... 241.2866 Minuten.
+
+Konfidenzintervalle angeben:
+
+```{r}
+predict(model, newleistung, interval = "confidence")
+```
+
+Das 95% Konfidenzintervall beträgt [218.3169, 264.2563].
+
+## ein anderes Model?
+Erklären Sie nach Ausführung des Codes, ob Sie visuell erkennen, dass ein anderes lineares Modell sinnvoller wäre
+```{r}
+mypanel = function(x, y) {
+  points(x, y)
+  abline(lm(y ~ x), col = "red")
+}
+
+pairs(daten[, -1], panel = mypanel)
+```
+
+Preis und Leistung scheint ein sinnvolleres lineares Modell zu sein. Das Summary bestätigt dies:
+
+R-squared von 0.447
+preis mit P von 0.00895 unter 10%-Signifikanzniveau.
+
+Resultat... Wir können mit linearer Regression besser Voraussagen, mit welchem Preis wir bei gewisser Leistung zu rechnen haben, als mit welcher Zeit bei bestimmter Leistung...
+
+```{r}
+model <- lm(leistung ~ preis, data = daten)
+summary(model)
+```
+
+# Multiple lineare Regression
+Wir setzen in der Übung fort und schließen Einheit 04 ab
+```{r}
+
+```

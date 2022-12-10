@@ -1,0 +1,101 @@
+---
+title: "Bericht (für Fachkollegen)"
+author: "David Meyer"
+date: "27\\. Mai 2016"
+output: pdf_document
+---
+
+# Ausgangssituation
+
+In einer Softwareentwicklungsfirma wurden für 21 Bugs (keine fehlenden
+Werte) folgende zwei Merkmale erhoben:
+
+- Behebungsdauer in Minuten (_dauer_)
+- Programmierer (_programmierer_)
+
+Gibt es einen Unterschied zwischen den Programmierern?
+
+# Datenmanagement
+
+Die Daten wurden mit `read.table()` eingelesen:
+
+```{r}
+bugfixes2 = read.table("../bugfixes2.csv", header = TRUE)
+head(bugfixes2)
+```
+
+# Visualisierung
+
+```{r boxdauer, echo = FALSE, fig.cap = "Boxplots von \\emph{dauer}, gegeben \\emph{programmierer}", fig.align = "center", out.width="0.7\\textwidth"}
+boxplot(dauer ~ programmierer, data = bugfixes2)
+abline(h = median(bugfixes2$dauer))
+```
+Die Verteilung der Bugfix-Dauer, gruppiert nach Programmierern,
+wird mit parallellen Boxplots dargestellt (siehe Abbildung
+\ref{fig:boxdauer}). Die 5-Punkt-Zusammenfassungen nach Programmierer lauten:
+
+```{r}
+aggregate(dauer ~ programmierer, data = bugfixes2, summary)
+```
+
+Programmierer Eckkrammer scheint deutlich schneller zu sein als seine
+beiden Kollegen.
+
+# Varianzanalyse
+
+Um die Hypothese: ``Alle Programmierer sind gleich schnell'' in der
+Grundgesamtheit zu testen, wird die einfache Varianzanalyse verwendet.
+Zunächst muss die Voraussetzung der Varianzhomogenität mittels
+Levene-Test überprüft werden:
+
+```{r}
+library(car)
+leveneTest(dauer ~ programmierer, data = bugfixes2)
+```
+
+Dieser spricht nicht gegen gleiche Varianzen in den Gruppen,
+die ANOVA kann somit durchgeführt werden. Zunächst wird ein
+Regressionsmodell (mit _dauer_ als abhängige und _programmierer_
+als unabhängige Variable) angepasst:
+
+```{r}
+model = lm(dauer ~ programmierer, data = bugfixes2)
+```
+
+Die ANOVA-Tabelle lautet:
+
+```{r}
+anova(model)
+```
+
+Der F-Test für den Faktor _programmierer_ verwirft die Nullhypothese:
+"Alle Gruppenmittel sind gleich" auf dem 0.05-Niveau. Die drei
+Programmierer arbeiten also nicht gleich schnell.
+
+Die Summary des Regressionsmodells lautet:
+
+```{r}
+summary(model)
+```
+
+Das Modell hat einen Erklärungswert von 63.8% und ist signifikant
+auf dem 0.05-Niveau. Der Achsenabschnitt repräsentiert die
+Bugfix-Dauer von Programmierer ``Eckkrammer'' und ist signifikant,
+ebenso wie die Koeffizienten für die anderen beiden Programmierer
+-- diese sind beide signifikant langsamer als Programmierer Eckkrammer.
+Der Effekt-Plot fasst dies grafisch zusammen:
+
+```{r}
+library(effects)
+plot(allEffects(model))
+```
+
+Abschließend prüfen wir noch die Normalverteilung der Residuen
+mittels QQ-Plot:
+
+```{r}
+qqnorm(residuals(model))
+qqline(residuals(model))
+```
+
+Dieser zeigt keine Auffälligkeiten.

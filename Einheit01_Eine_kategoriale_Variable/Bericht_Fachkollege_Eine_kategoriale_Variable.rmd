@@ -1,0 +1,72 @@
+---
+title: "Bericht (für Fachkollegen)"
+author: "David Meyer"
+date: "17 Februar 2016"
+output: pdf_document
+---
+
+Zur Untersuchung gelangte eine Stichprobe mit 60 Beobachtungen und
+einem kategorialen Merkmal mit den Ausprägungen: _Firefox_, _IE_, _Chrome_,
+_Opera_, _Safari_.
+Untersucht werden soll, ob die Kategorien gleichverteilt sind.
+
+Die Daten wurden mit `scan()` eingelesen und in einen Faktor
+umgewandelt:
+```{r}
+rohdaten = scan(file = "../browser.txt", what = "A")
+head(rohdaten)
+browser = as.factor(rohdaten)
+```
+
+Das Vorhandensein von fehlenden Werten überprüfen wir mit:
+```{r}
+any(is.na(browser))
+```
+
+Keine vorhanden, die Daten sind vollständig.
+Die Auszählung der absoluten Häufigkeiten mit `table()` ergibt:
+
+```{r}
+browser_abs = table(browser)
+browser_abs
+```
+und die Anteile lauten:
+```{r}
+browser_rel = round(100 * prop.table(browser_abs), 1)
+browser_rel
+```
+
+Die Annahme einer Gleichverteilung entspricht einem erwarteten Anteil
+von $1/5=20\%$ pro Kategorie, bzw. einer absoluten Häufigkeit von $60
+\times 0.2 = 12$. Das folgende Balkendiagramm zeigt die beobachteten
+absoluten Häufigkeiten, die erwarteten sind mittels Referenzlinie
+eingezeichnet:
+
+```{r, fig.align="center", out.width="0.6\\linewidth"}
+barplot(browser_abs,
+        main = "Browserpopularität unter Mitarbeitern der Fa. X (N = 60)")
+abline(h = 12, col = "red")
+```
+
+IE, Chrome und Firefox sind zwar ähnlich beliebt, aber
+werden häufiger genannt als erwartet; Safari und Opera sind deutlich
+geringer vertreten. Zwischenfazit: in der Stichprobe scheint die Annahme
+einer Gleichverteilung der Browser nicht zuzutreffen.
+
+Um die Hypothese bezüglich der Grundgesamtheit (alle
+Firmenmitarbeiter) zu überprüfen, führen wir einen $\chi^2$-Test zum
+Signifikanzniveau 0.05 durch:
+
+```{r}
+chisq.test(browser_abs)
+```
+
+Die Nullhypothese lautet: das Merkmal _Browser_ ist
+gleichverteilt (Alternative: nicht gleichverteilt). Der Wert der
+Teststatistik beträgt 15.83, der dazugehörige P-Wert (gerundet) 0.003.
+Deser liegt unter dem festgelegten Signifikanzniveau von 0.05, die
+Nullhypothese muss damit verworfen werden.
+
+Gesamtfazit: die Umfragedaten sprechen gegen eine Gleichverteilung
+der Browser unter allen Mitarbeitern.
+

@@ -1,0 +1,144 @@
+---
+title: "Bericht (für Fachkollegen)"
+author: "David Meyer"
+date: "24\\. August 2016"
+output: pdf_document
+---
+
+# Ausgangssituation
+
+In einer Softwareentwicklungsfirma wurden für 21 Bugs (keine fehlenden
+Werte) folgende drei Merkmale erhoben:
+
+- Behebungsdauer in Minuten (_dauer_)
+- Programmierer (_programmierer_)
+- Bugtyp (_bugtyp_)
+
+Gibt es einen Einfluss der jeweiligen Fakoren? Gibt es eine Wechselwirkung?
+
+# Datenmanagement
+
+Die Daten wurden mit `read.table()` eingelesen:
+
+```{r}
+bugfixes2 = read.table("../../Daten/bugfixes2.csv", header = TRUE)
+head(bugfixes2)
+```
+
+# Visualisierung
+
+```{r boxdauer, echo = FALSE, fig.cap = "Boxplots von \\emph{dauer}, gegeben \\emph{programmierer} und \\emph{bugtyp}", fig.align = "center", out.width="0.7\\textwidth"}
+par(oma = c(1,6,1,1))
+boxplot(dauer ~ bugtyp + programmierer, bugfixes2, las = 1, horizontal = TRUE)
+abline(v = median(bugfixes2$dauer), col = "red")
+abline(h = c(3.5, 6.5))
+```
+Die Verteilung der Bugfix-Dauer, gruppiert nach Programmierern und Bugtyp,
+wird mit parallellen Boxplots dargestellt (siehe Abbildung
+\ref{fig:boxdauer}). Die 5-Punkt-Zusammenfassungen nach
+Programmierer und Bugtyp lauten:
+
+```{r}
+aggregate(dauer ~ programmierer + bugtyp, data = bugfixes2, summary)
+```
+
+Programmierer Eckkrammer scheint deutlich schneller zu sein als seine
+beiden Kollegen. Der Bugtyp alleine scheint hingegen keinen Einfluss zu haben.
+Man erkennt jedoch, dass Eckkrammer GUI-Bugs besonders schnell fixt,
+während Meyer GUI-Bugs deutlich langsamer behebt. Dies könnte auf
+eine Wechselwirkung hindeuten.
+
+# Varianzanalyse
+
+Um die Hypothesen: "Alle Programmierer sind gleich schnell" sowie:
+"Bugs verschiedenen Typs werden gleich schnell gefixt" in der
+Grundgesamtheit zu testen, wird eine zweifache Varianzanalyse
+ohne Wechselwirkungen verwendet.
+
+Vorab überprüfen wir die Homogenität der Varianzen mit dem Levene-Test:
+
+```{r}
+library(car)
+leveneTest(dauer ~ programmierer * bugtyp, data = bugfixes2)
+```
+
+Dieser ist nicht signifikant, daher können wir mit der ANOVA fortfahren. Zunächst wird ein Regressionsmodell
+(mit _dauer_ als abhängiger und _programmierer_ sowie _bugtyp_
+als unabhängiger Variable) angepasst:
+
+```{r}
+model = lm(dauer ~ programmierer + bugtyp, data = bugfixes2)
+```
+
+Die ANOVA-Tabelle lautet:
+
+```{r}
+library(car)
+Anova(model)
+```
+
+Den Faktor _programmierer_ ist signifikant, _bugtyp_ hingegen nicht.
+
+Die Summary des Regressionsmodells lautet:
+
+```{r}
+summary(model)
+```
+
+Das Modell hat einen Erklärungswert von 65.9% und ist signifikant
+auf dem 0.05-Niveau. Der Achsenabschnitt repräsentiert die
+Bugfix-Dauer von Programmierer ``Eckkrammer'' bei DB-Bugs und ist signifikant,
+ebenso wie die Koeffizienten für die anderen beiden Programmierer
+-- diese sind beide signifikant langsamer als Programmierer Eckkrammer.
+Der Effekt-Plot fasst dies grafisch zusammen:
+
+```{r message=FALSE}
+library(effects)
+plot(allEffects(model))
+```
+
+Auch hier sieht man, dass Programmierer Eckkrammer signifkant schneller als seine Kollegen arbeitet, da sich die Konfidenzintervalle nicht überlappen. Abschließend prüfen wir noch die Normalverteilung der Residuen
+mittels QQ-Plot:
+
+```{r}
+qqnorm(residuals(model))
+qqline(residuals(model))
+```
+
+Dieser zeigt keine Auffälligkeiten.
+
+Prüfen wir nun die Frage nach einer möglichen Wechselwirkung
+zwischen _programmierer_ und _bugtyp_. Hierzu wird ein
+Regressionsmodell mit zusätzlichem Interaktionsterm geschätzt:
+
+
+```{r}
+model = lm(dauer ~ programmierer * bugtyp, data = bugfixes2)
+```
+
+Die ANOVA-Tabelle lautet:
+
+```{r}
+Anova(model)
+```
+
+Die Signifikanzen der Haupteffekte ändern sich nicht (Programmierer signifikant, Bugtyp nicht), der Interaktionsterm ist signifikant. Es besteht also ein gemeinsamer
+Einfluss von Programmierer und Bugtyp auf die Bugfix-Dauer.
+Die Auswirkungen der jeweiligen Faktorkombinationen sind im Effekt-Plot grafisch dargestellt:
+
+```{r}
+library(effects)
+plot(allEffects(model))
+```
+
+Es fällt zunächst auf, dass für alle drei Bugtypen Programmierer Eckkrammer signifikant schneller als die Kollegen arbeitet (in Einklang mit dem signifikanten Haupteffekt). Bei GUI-Bugs unterscheiden sich alle drei Kollegen signifkant voneinander: hier sind die Unterschiede somit besonders stark ausgeprägt (Wechselwirkungseffekt).
+
+Abschließend die Überprüfung der Normalverteilung der Residuen
+mittels QQ-Plot:
+
+```{r}
+qqnorm(residuals(model))
+qqline(residuals(model))
+```
+
+Dieser zeigt keine Auffälligkeiten.

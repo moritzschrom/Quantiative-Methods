@@ -1,0 +1,16 @@
+"name"|"leistung"|"preis"|"zeit"
+"1"|"Belkin Boost Up 15W"|15|39.99|243
+"2"|"Xtorm Angle XW203"|10|32.99|233
+"3"|"Zens ZESC02B"|10|58.29|280
+"4"|"Fantasy WP020"|5|8|247
+"5"|"Satechi Aluminum Wireless Charger"|9|34.99|295
+"6"|"Samsung EPPG950"|9|46.99|232
+"7"|"StilGut kabellose Ladestation"|10|49.99|211
+"8"|"Xtorm Freedom XW202"|10|28.99|223
+"9"|"Samsung EPNG930"|10|41.99|221
+"10"|"Zens ZESC06B"|10|32.9|233
+"11"|"Good Connections Wireless Qi Charger"|NA|15.6|235
+"12"|"RAVPower RPPC066"|8|28.99|221
+"13"|"Choetech T511"|8|14|228
+"14"|"Anker PowerPort Qi Wireless Charger a2511"|5|13.99|247
+"15"|"Anker PowerPort Qi"|5|19.99|240

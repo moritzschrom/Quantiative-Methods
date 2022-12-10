@@ -1,0 +1,178 @@
+---
+title: "Bericht (für Fachkollegen)"
+author: "David Meyer"
+date: "10\\. April 2019"
+output: pdf_document
+---
+
+# Ausgangssituation
+
+Zur Untersuchung gelangte eine Stichprobe mit 60 Beobachtungen und
+drei kategorialen Merkmalen: _Browser_ (mit den Ausprägungen:
+Firefox, IE, Chrome, Opera und Safari),  _Email_ (Thunderbird, Outlook)
+sowie _Abteilung_ (Vertrieb, Entwicklung). Untersucht werden soll ein
+möglicher Zusammenhang zwischen _Browser_ und _Email_, sowie
+zwischen _Browser_ und _Abteilung_.
+
+# Datenmanagement
+
+Die Daten wurden mit `read.table()` eingelesen:
+```{r}
+umfrage = read.table("../umfrage.csv",
+                     sep = ",", header = TRUE)
+head(umfrage)
+```
+
+Es gibt keine fehlenden Werte:
+```{r}
+any(is.na(umfrage))
+```
+
+# Übersicht über die Einzelmerkmale
+
+Zunächst verschaffen wir uns einen Überblick über die Einzelmerkmale:
+
+```{r, out.width = "0.6\\linewidth", fig.align = "center"}
+browser = table(umfrage$browser)
+browser
+barplot(browser, main = "Absolute Häufigkeiten von Browser (N=60)")
+```
+Chrome, Firefox und IE sind am populärsten (in etwa gleich oft genannt),
+Opera und Safari werden deutlich seltener genannt.
+
+```{r, out.width = "0.6\\linewidth", fig.align = "center"}
+email = table(umfrage$email)
+email
+barplot(email, main = "Absolute Häufigkeiten von Email (N=60)")
+```
+Beide E-Mail-Clients sind in etwa gleich häufig vertreten.
+
+```{r, out.width = "0.6\\linewidth", fig.align = "center"}
+abteilung = table(umfrage$abteilung)
+abteilung
+barplot(abteilung, main = "Absolute Häufigkeiten von Abteilung (N=60)")
+```
+Aus beiden Abteilungen stammen in etwa gleich viel Respondenten.
+
+# Zusammenhang zwischen Browser und E-Mail-Client
+
+Es handelt sich um zwei Merkmale, die pro Respondent erhoben wurden.
+Keines der Merkmale stellt ein offensichtliches Gruppierungsmerkmal dar.
+Es handelt sich daher um ein _Unabhängigkeitsproblem_.
+
+Wir ermitteln zunächst die Kontingenztabelle der beiden Merkmale:
+
+```{r}
+tab_email_browser = with(umfrage, table(email, browser))
+library(pander)
+pander(tab_email_browser, justify = "right", emphasize.rownames = FALSE)
+```
+
+In Gesamtprozent:
+
+```{r}
+tab_anteile = round(prop.table(tab_email_browser), 2)
+pander(tab_anteile,
+       justify = "right", emphasize.rownames = FALSE)
+```
+
+
+Zur Visualisierung verwenden stellen wir die Kacheldiagramme der
+beobachteten und erwarteten Werte gegenüber:
+
+```{r, fig.show="hold", out.width="0.6\\linewidth", fig.width=4, fig.align = "center", fig.cap="Popularität von Browser und E-Mail-Clients (N=60)"}
+library(vcd)
+tile(tab_email_browser, main = "Beobachtete Werte",
+     abbreviate = c(email = 5))
+tile(tab_email_browser, type = "expected", main = "Erwartete Werte",
+     abbreviate = c(email = 5))
+```
+Unter Unabhängigkeit zu erwarten sind in etwa gleich viel Nennungen für
+die Browser IE, Firefox und Chrome (unabhängig von Abteilung), sowie
+in etwa gleich viel für Opera und Safari (wieder unabhängig von
+Abteilung), jedoch weniger als für die ersten drei Browser. Bei den
+beobachteten Werten scheint es vor allem weniger Nennungen für Outlook/IE
+und Outlook/Opera zu geben, als erwartet.
+
+Um die Unabhängigkeit von _Browser_ und _Email_
+bezüglich der Grundgesamheit zu testen, verwenden wir einen
+$\chi^2$-Test (Nullhypothese: _Browser_ und _Email_ sind unabhängig; Alternativhypothese: sie sind abhängig). Als Signifikanzniveau legen wir 0.05 fest.
+
+```{r}
+chisq.test(tab_email_browser)
+```
+
+Aufgrund der Warnmeldung (zuwenig erwartete Werte in manchen Zellen)
+kontrollieren wir mittels simuliertem P-Wert nach:
+```{r}
+chisq.test(tab_email_browser, simulate.p.value = TRUE, B = 10000)
+```
+
+Da der P-Wert in beiden Fällen mit rund 0.15 über dem Signifkanzniveau
+von 0.05 liegt, kann die Nullhypothese nicht verworfen werden: mit den
+vorliegenden Daten ist kein Zusammenhang zwischen _Browser_ und
+_Email_ nachweisbar.
+
+# Zusammenhang zwischen Browser und Abteilung
+
+Bei der zweiten Fragestellung ist zu untersuchen, ob die Browser in
+den beiden untersuchten Abteilungen gleich populär sind. _Abteilung_
+stellt ein Gruppierungsmerkmal dar, es handelt sich daher um
+ein Homogenitätsproblem.
+
+Wir erstellen wieder die Kontingenztabelle der beiden Merkmale:
+
+```{r}
+tab_abteilung_browser = with(umfrage, table(abteilung, browser))
+pander(tab_abteilung_browser,
+       justify = "right",
+       emphasize.rownames = FALSE)
+```
+
+Die relativen Anteile werden in Zeilenprozent, also normiert auf die Abteilungen, angegeben:
+
+```{r}
+tab_abt_rel = round(prop.table(tab_abteilung_browser, 1), 2)
+pander(tab_abt_rel,
+       justify = "right",
+       emphasize.rownames = FALSE)
+```
+
+In der Entwicklungsabteilung ist IE am populärsten, in der Vertriebsabteilung dagegen Firefox. Die Anteile von Chrome, Firefox und Opera sind in der Vertriebsabteilung höher als in der Entwicklungsabteilung.
+
+Zur Visualisierung der absoluten Häufigkeiten verwenden wir ein
+gruppiertes Balkendiagramm:
+```{r, out.width="0.6\\linewidth", fig.align = "center"}
+barplot(t(tab_abteilung_browser),
+        main = "Browserpopularität nach Abteilung",
+        beside = TRUE, legend = TRUE)
+```
+
+und für die Anteile einen Spineplot:
+```{r, out.width="0.6\\linewidth", fig.height=6, fig.align = "center"}
+spineplot(tab_abteilung_browser, main = "Browserpopularität nach Abteilung")
+```
+
+Auch in den Diagrammen sieht man, dass die Verteilungen in den beiden Abteilungen etwas voneinander abweichen:
+die Anteile von Chrome und Firefox sind im Vertrieb höher als in der
+Entwicklung, jener von IE dafür kleiner. Die Anteile von Opera und
+Safari sind in beiden Abteilungen unterschiedlich.
+
+Um zu überpüfen, ob die in der Stichprobe beobachteten Unterschiede
+auch auf die Grundgesamtheit zutreffen, verwenden wir abermals einen
+$\chi^2$-Test mit Signifikanzniveau 0.05 (Nullhypothese: Verteilung der Browser homogen in den Abteilungen; Alternative: nicht homogen):
+
+```{r}
+chisq.test(tab_abteilung_browser)
+```
+
+Aufgrund der Warnmeldung kontrollieren wir mit simulierten P-Werten:
+```{r}
+chisq.test(tab_abteilung_browser, simulate.p.value = TRUE, B = 10000)
+```
+
+Der P-Wert liegt in beiden Fällen weit über dem Signifikanzniveau
+von 0.05, die Homogenitätshypothese wird also beibehalten: mit den
+vorliegenden Daten kann _keine_ unterschiedliche Browser-Popularität
+in den beiden Abteilungen _Entwicklung_ und _Vetrieb_ nachgewiesen
+werden.
