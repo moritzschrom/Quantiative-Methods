@@ -1,0 +1,215 @@
+---
+title: "Wiedrholung und Verbesserung"
+author: "Michael Fischer"
+date: "Dezember 2022"
+output: pdf_document
+---
+
+# Übungsteil
+So ausführlich wie es geht.
+Wir importieren die Daten
+
+```{r}
+daten <- read.table("konjunktur.txt", sep = ",", header = TRUE)
+head(daten)
+dim(daten)
+summary(daten)
+```
+Die Stichprobengröße ist 66; Eine metrische abhängige Variable (`gewinn`); zwei kategoriale, unabhängige (`branche` und `groesse`). Alle drei Variablen weisen  mehrere fehlende Werte auf, die wie üblich entfernt werden.
+
+```{r}
+nrow(daten) # n
+idx <- complete.cases(daten)
+table(idx)
+daten <- subset(daten, idx)
+dim(daten)
+```
+
+
+Nun wandeln wir die Prädiktoren in Faktoren um und überschreiben die ursprüngliche Variable
+
+```{r}
+daten$branche <- factor(daten$branche, labels = c("Metallindustrie", "Textilindustrie", "Handel"))
+daten$groesse <- factor(daten$groesse, labels = c("klein", "groß"))
+summary(daten)
+```
+
+Erste Analyse
+```{r}
+aggregate(gewinn ~ branche, daten, mean)
+```
+Größte Zuwächse für den Handel, geringste für die Metallindustrie. Weiters
+```{r}
+boxplot(gewinn ~ branche, daten, horizontal = TRUE)
+abline(v = median(daten$gewinn), col = "red")
+```
+
+Leventest der Varianzen!
+```{r}
+library(car)
+leveneTest(gewinn ~ branche, daten)
+```
+Unterschiede in den Varianzen erkennbar, aber nicht signifikant
+
+```{r}
+m1 <- aov(gewinn ~ branche, daten)
+summary(m1)
+```
+keine signifikanten Unterschiede feststellbar
+
+```{r}
+library(effects)
+plot(allEffects(m1))
+```
+Auch hier keine Hinweise auf paarweise Unterschiede
+
+```{r}
+aggregate(gewinn ~ groesse, daten, mean)
+```
+ähnliche Werte für beide Firmenkategorien
+
+```{r}
+boxplot(gewinn ~ groesse, daten, horizontal = TRUE)
+leveneTest(gewinn ~ groesse, daten)
+```
+Auch o.k., nun unter Bedingung
+
+```{r}
+m2 <- aov(gewinn ~ groesse, daten)
+summary(m2)
+```
+Wie deskriptiv zu vermuten war: keine signifikanten Unterschiede feststellbar
+
+```{r}
+plot(allEffects(m2))
+```
+
+Nun das nächste Model
+```{r}
+m3 <- aov(gewinn ~ branche + groesse, daten)
+summary(m3)
+plot(allEffects(m3))
+```
+Wir erkennen, beide Haupeffekte nicht signifikant
+
+```{r}
+aggregate(gewinn ~ branche * groesse, daten, mean)
+```
+
+```{r}
+namen <- paste(rep(c("Metall", "Handel", "Textil"), each = 2), "\n",
+               rep(c("groß", "klein"), 3), sep = "")
+boxplot(gewinn ~ groesse + branche, daten, horizontal = TRUE, names = namen,
+        pars = list(cex.axis = 0.75))
+abline(v = median(daten$gewinn), col = "red")
+abline(h = c(2.5, 4.5))
+```
+
+Sehr unterschiedliche Muster in den einzelnen Branchen -> Hinweis auf mögliche Interaktion.
+\begin{itemize}
+\item Textilindustrie: vor allem kleine Betriebe profitieren
+\item Handel: vor allem große Betriebe profitieren
+\item Metallindustrie: ähnliche Zuwächse für große und kleine Betriebe
+\end{itemize}
+
+```{r}
+leveneTest(gewinn ~ branche * groesse, daten)
+```
+Erneut Homogene Varianzen, daher o.k.
+
+```{r}
+m4 <- aov(gewinn ~ branche * groesse, daten)
+summary(m4)
+```
+Wechselwirkung ist signifikant (-> Haupteffekte werden nicht interpretiert)
+
+```{r}
+plot(allEffects(m4))
+```
+Wir schließen, Wechselwirkungen präsent: Bei kleinen Betrieben profitiert die Textilindustrie signifikant  stärker als der Handel (und vermutl. die Metallindustrie - knapp), bei den  großen Betrieben ist es der Handel, der sich sig. von der Textilindustrie und  (etwas weniger deutlich) von der Metallindustrie unterscheidet und stärker profitiert.   -> Entscheidung für das Modell mit Wechselwirkung, da es den höchsten  Erklärungswert liefert und man gleichzeitig die WW nicht entfernen kann, ohne ein sig.schlechteres Modell zu erhalten.
+
+```{r}
+res <- lm(gewinn ~ branche * groesse, daten)
+summary(res)
+```
+Wir sehen, knapp 52% der Varianz können durch das Modell erklärt werden.
+
+```{r}
+qqnorm(residuals(m4))
+qqline(residuals(m4))
+```
+Wie immer leichte Abweichungen erkennbar, sollte aber insgesamt kein Problem darstellen.
+
+\newpage
+# Wiederholung
+## Modelle für IBM-Aktienkurse
+Importieren wir Daten aus dem Internet. Dazu brauchen wir die Funktion get.hist.quote() aus dem tseries-Package. Wie immer überprüfen wir bezüglich fehlenden Daten
+```{r}
+# library(tseries)
+ibm <- tseries::get.hist.quote(instrument = "ibm", quote = "Close", compression = "m")
+sum(is.na(ibm))
+head(ibm)
+```
+Visualisieren wir den Datensatz
+```{r}
+plot(ibm, main = "International Business Machines Corp")
+```
+Erstellen wir nun ts
+```{r}
+ibm.ts <- ts(ibm, start = c(1991, 01), freq = 12)
+```
+
+Decomposen wir die Daten
+```{r}
+ibm_comp = decompose(ibm.ts)
+plot(ibm_comp)
+```
+Seasonal ist nur schwach ausgeprägt, was ist die maximale Abweichung? Daher keine genauere Betrachtung der Saisonfigur notwendig. random: lässt erkennen, dass es Abweichungen von bis zu  $\pm 20$ Dollar gibt,  d. h., dass die beobachteten Anstiege und Einbrüche nicht immer gut durch Trend und Saisonalität erklärt werden können. random ist im Laufe der Jahre auch stark gewachsen!
+
+Untersuchen wir die Abnahme seit 2012
+```{r}
+ibm_reg <- window(ibm.ts, start = c(2012, 1))
+t <- time(ibm_reg)
+s = as.factor(cycle(ibm_reg))
+m1 <- lm(ibm_reg ~ t + s)
+options(scipen = 10) # sets a penalty for scientific notation
+summary(m1)
+```
+Signifikant in der Zeit! Um wie viel sinkt der Kurs pro Jahr? Keine signifikanten Einflüsse der einzelnen Monate (verglichen mit dem  Basismonat Jänner) erkennbar, für die restliche Modellinterpretationen (R-Quadrat, Regressionsformel, Konfidenzintervalle) siehe Einheit 5
+
+Modellwahl über ANOVA
+```{r}
+library(car)
+Anova(m1)
+```
+Wir sehen, s sollte entfernt werden. Simplifizieren wir das Modell!
+```{r}
+m2 <- lm(ibm_reg ~ t)
+summary(m2)
+```
+t weiterhin signifikant, Wert kaum geändert, R-Quadrat ist zwar kleiner, aber auch das Modell ist sehr viel simpler
+
+## Extrapolation
+Erzeugen wir die Daten für die Extrapolation in den kommenden zwei Jahren
+```{r}
+s <- rep(1:12, 24)
+newdata = data.frame(t = seq(from = 2022 + 9/12, by = 1/12, length = 24), s = as.factor(s))
+```
+Predicten wir nun mit Hilfe unseres Models
+```{r}
+pred = predict(m1, newdata)
+pred = ts(pred, start = 2022 + 9/12, frequency = 12)
+plot(ibm_reg,
+     main = "Beobachtete und vorhergesagte Aktienkurse
+     für IBM",
+     xlim = c(2022, 2024), ylim = c(30, 200))
+fit = ts(pred, start = start(ibm_reg), freq = frequency(ibm_reg))
+lines(fit, col = "red")
+conf = predict(m1, newdata, interval = "prediction")
+lwr = ts(conf[, 2], start = 2022 + 9/12, freq = 12)
+lines(lwr, col = "black", lty = "dotted")
+upr = ts(conf[, 3], start = 2022 + 9/12, freq = 12)
+lines(upr, col = "black", lty = "dotted")
+```
+
+Echter Aktienwert tatsächlich noch im Konfidenzintervall des seit 2012 laufenden Models. Jährliche Abnahme scheint daher sehr konstant zu sein.

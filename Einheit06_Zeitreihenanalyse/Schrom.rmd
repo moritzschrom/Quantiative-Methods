@@ -1,0 +1,165 @@
+---
+title: "Uebung zur Einheit 06"
+author: "Moritz Schrom"
+date: "13.\\ Dezember 2022"
+output: pdf_document
+---
+
+# Abgabe
+Lösen Sie die folgenden Aufgabe mit Hilfe der passenden R-Funktionen und laden Sie die Lösungen im Moodle-Upload als PDF-Dokument hoch. Namenskonvention: UE6_nachname.pdf
+
+Hinweis: Schreiben Sie einen Bericht für Fachkolleg:innen!
+
+# Import
+Im Datenfile Nachname.txt sind folgende Variablen enthalten:
+\begin{itemize}
+\item gewinn: Gewinnveränderung (in $\%$)
+\item branche: Branche (1...Metallindustrie, 2...Textilindustrie, 3...Handel)
+\item groesse: Betriebsgröße (1...klein, 2...groß)
+\end{itemize}
+
+# Aufgabe Konjunktur
+
+In einem Land kommt es zu einem Konjunkturaufschwung. Es soll geprüft werden, ob drei bestimmte
+Branchen vom Aufschwung in gleicher Weise profitieren. Weiters soll untersucht werden, ob der Aufschwung
+kleine Betriebe anders betrifft als große Betriebe. Dazu wurden aus den drei Branchen jeweils X kleine und
+X große Betriebe zufällig ausgewählt und die im Datensatz gegebenen prozentualen Gewinnveränderungen
+erhoben.
+
+Einlesen der Daten mit Hilfe von read.table
+
+```{r}
+konjunktur <- read.table("Schrom.txt", header = TRUE, sep = ",")
+```
+
+## Hinweise
+### Hinweis 1
+Sind die Daten vollständig?
+
+```{r}
+summary(konjunktur)
+```
+
+Ein Summary der Daten zeigt. Es gibt 2 Nullwerte bei branche und 4 Nullwerte bei groesse.
+Diese entfernen wir:
+
+```{r}
+konjunktur <- konjunktur[complete.cases(konjunktur), ]
+summary(konjunktur)
+```
+
+### Hinweis 2
+Sie müssen die Variablen branche und groesse zuerst als Faktoren definieren, damit R diese
+nicht aufgrund ihrer numerischen Kodierung als metrisch betrachtet und falsche Ergebnisse liefert. Geben
+Sie den Kategorien auch aussagekräftige Namen/Labels, z. B. so:
+```{r}
+#daten$groesse <- factor(daten$groesse, labels = c("klein", "groß"))
+konjunktur$branche <- factor(konjunktur$branche, labels = c("Metallindustrie", "Textilindustrie", "Handel"))
+konjunktur$groesse <- factor(konjunktur$groesse, labels = c("klein", "groß"))
+summary(konjunktur)
+```
+
+### Hinweis 3
+Die zweifachen Varianzanalysen sind in jedem Fall durchzuführen, auch wenn gewisse Vorausset-
+zungen (Ausreißer, Varianzhomogenität, . . . ) verletzt sind. Weisen Sie in diesem Fall einfach im Fließtext
+auf die Probleme hin.
+
+
+
+## Struktur der Analyse
+Welche Branche scheint in der Stichprobe am meisten vom Konjunkturaufschwung zu profitieren?
+\begin{itemize}
+\item Hängen die Gewinnänderungen in der Stichprobe von der Betriebsgröße ab?
+\item Zu welchem Schluss kommt man, wenn man beide Prädiktoren als Haupteffekte ins Modell aufnimmt?
+\item Ist eine Wechselwirkung vorhanden?
+\item Für welches der möglichen fünf Modelle (konstantes Modell/einfache Varianzanalysen/zweifache Vari-
+anzanalyse ohne/mit Wechselwirkung) würden Sie sich schlussendlich entscheiden und warum
+\end{itemize}
+
+Hängen die Gewinnänderungen in der Stichrpobe von der Betriebsgröße ab?
+
+Schauen wir uns zunächst die Homogenität der Varianzen unseres Modells mit dem Levene-Test an:
+```{r}
+library(car)
+model1 <- lm(gewinn ~ groesse, data = konjunktur)
+leveneTest(model1)
+```
+
+Das Ergebnis: 0.034, ist auf dem 0.05 Niveau signifikant. Was heißt das?
+Wir müssten die Nullhypothese "Gleiche Varianzen" eigentlich verwerfen, und könnten mit der ANOVA nicht fortfahren.
+Fahren wir trotzdem fort:
+
+```{r}
+summary(model1)
+anova(model1)
+```
+
+Was heißt das für uns im konkreten Fall?
+Wir können unsere Nullhypothese für den Faktor "groesse": "Alle Gewinnentwicklungen sind gleich" nicht verwerfen:
+Die Gewinnentwicklungen sind also gleich.
+
+Auch das Summary des Modells zeigt keine Signifikanz der Unternehmensgröße (das Modell würde nur 0,1% der Varianz erklären, das ist extrem wenig...)
+
+
+Zu welchem Schluss kommt man, wenn man beide Prädiktoren als Haupteffekte ins Modell aufnimmt?
+
+Dafür erstellen wir ein neues Modell, mit beiden Prädikatoren:
+Außerdem schauen wir uns wieder mit dem Levene-Test die Homogenität der Varianzen an:
+
+```{r}
+leveneTest(gewinn ~ groesse * branche, data = konjunktur)
+```
+
+Auch hier können wir die Nullhypothese der Gleichverteilung nicht verwerfen... Fahren wir trotzdem mit unserem Modell fort, und wenden die zweifache Anova an, sowie lassen uns eine Summary des Modells ausgeben.
+
+```{r}
+model2 <- lm(gewinn ~ groesse + branche, data = konjunktur)
+Anova(model2)
+summary(model2)
+```
+
+Beide Faktoren sind nicht signifikant.
+
+
+Ist eine Wechselwirkung vorhanden?
+
+```{r}
+model3 <- lm(gewinn ~ groesse * branche, data = konjunktur)
+Anova(model3)
+```
+
+Und hier ist zu sehen: Der Interaktionsterm ist hochsignifikant (auf dem 0.001 Niveau). Es besteht also ein gemeinsamer
+Einfluss von Größe und Branche auf die Gewinnentwicklung.
+
+Es gibt somit eine Wechselwirkung!
+
+Lassen wir uns wieder ein Summary des Modells ausgeben, um den Erklärungswert zu ermitteln
+
+```{r}
+summary(model3)
+```
+
+Unser Modell erklärt 53 Prozent der Varianz. Lassen wir uns diese Erkenntnis mit einem Effektplot darstellen:
+Hier wird verdeutlicht: Große Unternehmen in der Handelsbranche haben signifikant mehr vom Konjunkturaufschwung profitiert, als Unternehmen anderer Größe in anderen Branchen. Die Konfidenzintervalle überschneiden sich teilweise bis nicht.
+Großen Unternehmen aus der Textilindustrie haben jedoch etwas schlechter abgeschnitten.
+Bei den kleinen Unternehmen haben jedoch wiederum Textilunternehmen signifikant mehr profitiert als die anderen Branchen...
+
+```{r}
+library(effects)
+plot(allEffects(model3))
+```
+
+Schauen wir uns noch die Normalverteilung der Residuen an:
+
+```{r}
+qqnorm(residuals(model3))
+qqline(residuals(model3))
+```
+
+Dieser zeigt Auffälligkeiten in Form von Ausreißern und Mustern... Daher sollten wir unser Modell nochmal hinterfragen.
+
+
+Für welches der möglichen fünf Modelle (konstantes Modell/einfache Varianzanalysen/zweifache Vari-
+anzanalyse ohne/mit Wechselwirkung) würden Sie sich schlussendlich entscheiden und warum
+
+Schlussendlich würde ich mich für die zweifache Varianzanalyse mit Wechselwirkung entscheiden, da diese beide Faktoren (Größe und Branche) miteinbezieht, sowie die Wechselwirkungen zwischen diesen. Es hat sich gezeigt, dass weder die Größe alleine, noch die Branche alleine signifikant für die Gewinnentwicklung war, sehr wohl jedoch die Kombination aus ebendiesen zwei Faktoren.

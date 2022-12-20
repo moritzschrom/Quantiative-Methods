@@ -1,0 +1,93 @@
+---
+title: "Wiederholung"
+author: "Michael Fiscer"
+date: "09.12.2022"
+output: pdf_document
+---
+
+# Ausgangssituation
+
+In einer Softwareentwicklungsfirma wurden für 21 Bugs folgende drei Merkmale erhoben:
+
+- Behebungsdauer in Minuten (_dauer_)
+- Programmierer:in (_programmierer_)
+- Bugtyp (_bugtyp_)
+
+Gibt es einen Einfluss der jeweiligen Fakoren? Gibt es eine Wechselwirkung? Jedoch zunächst: Gibt es fehlende Werte?
+
+# bugfixes3management
+
+Die bugfixes3 werden mit `read.table()` eingelesen, davor haben wir uns überzeugt, dass ein header vorliegt:
+
+```{r}
+bugfixes3 = read.table("bugfixes3.csv", header = TRUE)
+head(bugfixes3)
+any(is.na(bugfixes3))
+summary(bugfixes3)
+```
+
+
+# bugfixes3bereinigung
+Überprüfen Sie, ob Ihr Datensatz vollständig ist. Wenn nicht, entfernen Sie die daten Gehen Sie dabei wie im Skript zu Data frames vor, Seite 76 und insbesondere 77.
+```{r}
+dim(bugfixes3)
+idx = complete.cases(bugfixes3)
+bugfixes3 = subset(bugfixes3, idx)
+dim(bugfixes3)
+```
+
+# Visualisierung
+Betrachten wir die Boxplots nach Programmierer:in/Bug aufgeteilt
+```{r}
+boxplot(dauer ~ bugtyp + programmierer, bugfixes3, las = 1, horizontal = TRUE)
+abline(v = median(bugfixes3$dauer), col = "red")
+abline(h = c(3.5, 6.5))
+```
+
+# Varianzanalyse, Teil 1
+Um die Vermutung bezüglich Programmier:in und Einfluss des Bugtyps zu untersuchen, planen wir eine Varianzanalysie. Vorab überprüfen wir die Homogenität der Varianzen mit dem Levene-Test
+```{r}
+library(car)
+leveneTest(dauer ~ programmierer *  bugtyp, data = bugfixes3)
+```
+
+Dieser ist nicht signifikant, daher können wir mit der ANOVA fortfahren. Zunächst wird ein Regressionsmodell (mit _dauer_ als abhängiger und _programmierer_ sowie _bugtyp_ als unabhängiger Variable) angepasst, wir betrachten im Anschluss gleich die summary des Models:
+
+
+```{r}
+model = lm(dauer ~ programmierer + bugtyp, data = bugfixes3)
+```
+
+Zu Beginn prüfen wir noch die Normalverteilung der Residuen mittels QQ-Plot,
+```{r}
+qqnorm(residuals(model))
+qqline(residuals(model))
+```
+Dieser zeigt Auffälligkeiten an den Rändern!
+
+```{r}
+summary(model)
+library(car)
+Anova(model)
+```
+Unser Schluss ist ähnlich als Dienstags: Den Faktor _programmierer_ ist signifikant, _bugtyp_ hingegen nicht. Das Modell hat einen Erklärungswert von 61.1% und ist signifikant auf dem 0.05-Niveau. Programmierer ``Eckkrammer'' bei DB-Bugs und ist signifikant, ebenso wie die Koeffizienten für die anderen beiden Programmierer -- diese sind beide signifikant langsamer als Programmierer Eckkrammer. Der neue Programmierer Fischer jedoch nicht, woran könnte das liegen?
+Was ist ein Unterschied/Vorteil von Anova und summary?
+
+Visualisieren wir die Ergebnisse, sind sie noch deutlicher als Dienstag?
+```{r}
+# library(effects)
+# plot(allEffects(model))
+```
+
+
+\newpage
+# Varianzanalyse, Teil 2
+Was machen wir nun im Teil 2 anders? Und wie sehr unterscheiden sich unsere Resultate von zuvor?
+```{r}
+library(car)
+leveneTest(dauer ~ programmierer * bugtyp, data = bugfixes3)
+model2 = lm(dauer ~ programmierer * bugtyp, data = bugfixes3)
+summary(model2)
+library(car)
+Anova(model2)
+```
