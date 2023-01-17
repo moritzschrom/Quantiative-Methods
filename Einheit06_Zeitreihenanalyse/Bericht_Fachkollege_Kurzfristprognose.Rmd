@@ -1,0 +1,108 @@
+---
+title: "Bericht (für Fachkollegen)"
+author: "David Meyer"
+date: "31\\. Mai 2019"
+output: pdf_document
+---
+
+# Ausgangssituation
+
+Für einen PC-Assemblierer soll der tägliche Bedarf an Schrauben, die in der
+Montageabteilung benötigt werden, für die Beschaffungsplanung vorhergesagt
+werden. Es stehen die Werte der letzten vier Wochen zur Vefügung (Freitags
+wird nur bis Mittag gearbeitet).
+
+# Datenmanagement
+
+Die Daten wurden mit `scan()` eingelesen und in eine Zeitreihe umgewandelt:
+
+```{r}
+x = scan(text = "200 198 200 199  99
+                 211 209 211 209 105
+                 220 220 218 220 109
+                 231 228 232 231 114")
+
+schrauben = ts(x, frequency = 5)
+```
+
+
+Stichprobengröße, fehlende Werte:
+
+```{r}
+length(schrauben)
+sum(is.na(schrauben))
+```
+
+**Datensteckbrief:**
+
+Es liegt ein metrisches (diskretes) Merkmal mit 20 Beobachtungen (keine fehlenden Werte) 
+als Zeitreihe vor. Die Messungen erfolgten in 5 Wochen mit Tagesauflösung (5 Werte pro Woche).
+
+# Numerische Beschreibung
+
+```{r}
+summary(schrauben)
+```
+
+Der mittlere Bedarf über den Beobachtungszeitraum beträgt rd. 193 Stück; das Minimum lag bei 99, das Maximum bei 232 Stück.
+
+# Grafische Darstellung der Ist-Werte
+
+Das Zeitreihendiagramm sieht wie folgt aus:
+
+```{r out.width="0.7\\linewidth",fig.align="center"}
+plot(schrauben, main = "Schraubenbedarf über 4 Wochen (N = 20)")
+```
+
+Man erkennt einen klaren Aufwärtstrend, und den regelmäßigen Abfall zu
+Wochenende.
+
+# Trend und Saison
+
+Für eine nähere Betrachtung wird die Zeitreihe in Trend- und Saisonkomponente
+zerlegt und diese dargestellt:
+
+```{r}
+dec = decompose(schrauben)
+plot(dec)
+```
+
+Der vermutete Aufwärtstrend ist gut in der
+Trendkomponente zu erkennen, die nahezu konstant ansteigt, ebenso wie der Saisoneffekt. Betrachten wir die Saisonfigur genauer:
+
+```{r out.width="70%"}
+monthplot(dec$seasonal)
+```
+
+Im wesentlichen erfolgt am Freitag eine deutliche Reduktion (minus 80 Stück) des Schraubenbedarfs gegenüber dem Basisniveau -- bedingt durch die geringere Arbeitsleistung aufgrund des früheren Arbeitsschlusses. 
+
+# Modellschätzung
+
+Für die Kurzfrist-Prognose der kommenden Tage wird ein HoltWinters-Modell mit Saison- und Trendkomponente verwendet:
+
+```{r}
+model = HoltWinters(schrauben)
+model
+```
+
+Bei der automatischen Anpassung der Glättungsparameter wurde für $\alpha$ (Parameter für Achsenabschnitt) 25% gewählt (Berücksichtigung der aktuellen Werte nur zu 25%); für $\beta$ (Parameter für Trend) der Wert 0 (nur die vergangenen Werte waren für die Schätzung relevant); für $\gamma$ (Parameter für Saison) der Wert 1 (nur die aktuellsten Werte waren jeweils für die Schätzung ausschlaggebend).
+
+Das Prognosemodell lautet:
+$$Y_{t+k} = 209.36 + 2.011 k + 29.07 (s = 1) + 24.37(s=2) + 25.25(s=3) + 21.98(s=4) -95.36(s=5)$$
+
+wobei $k$ den $k$-ten Messpunkt (also Tag) in der Zukunft darstellt.
+Der Basisbedarf beträgt somit rd. 209 Stück, erhöht sich pro Tag um 2 Stück, und wird je nach Wochentag um 22 bis 29 Stück nach oben, aber am Freitag um rd. 95 Stück nach unten 
+korrigiert.
+
+Die Prognose für die nächsten 5 Tage (samt Prognoseintervalle) lautet:
+
+```{r}
+pred = predict(model, n.ahead = 5, prediction.interval = TRUE)
+pred
+```
+
+und ist samt den Ursprungsdaten in folgendem Diagramm dargestellt:
+
+```{r}
+plot(model, predicted.values = pred)
+```

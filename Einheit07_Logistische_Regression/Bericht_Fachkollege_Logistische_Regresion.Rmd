@@ -1,0 +1,133 @@
+---
+title: "Bericht (für Fachkollegen)"
+author: "David Meyer, Marcus Wurzer"
+date: "22\\. Oktober 2019"
+output: pdf_document
+---
+
+```{r, echo = FALSE, message=FALSE}
+library(pander)
+library(car)
+library(vcd)
+```
+
+
+# Ausgangssituation
+
+In einer Firma wurden in einem Serverraum Lüfter verschiedenen Alters (in Monaten) auf ihre Funktionsfähigkeit überprüft:
+
+-----------------------------------------------------------------------------------------
+       &nbsp;    1   2   3   4   5   6   7   8   9   10   11   12   13   14   15   16   17
+------------- --- --- --- --- --- --- --- --- --- ---- ---- ---- ---- ---- ---- ---- ----
+    **Alter**   2  10  12  16  17  18  19  19  20   21   25   27   29   30   34   36   36
+
+  **Ausfall**  F   F   F   F   F   T   F   F   T    T    F    T    T    T    T    T    T
+--------------------------------------------------------
+
+Kann man die Ausfallswahrscheinlichkeit durch das Alter vorhersagen? Wie lautet diese für 25, 30 und 35 Monate?
+
+# Datenmanagement
+
+Die Daten können direkt mittels `scan()` eingelesen werden:
+
+```{r, message=FALSE}
+alter = scan(text = "2 10 12 16 17 18 19 19 20 21 25 27 29 30 34 36 36")
+defekt = scan(text = "F  F  F  F  F  T  F  F  T  T  F  T  T  T  T  T  T", what = TRUE)
+ausfall  = factor(defekt, labels = c("Nein","Ja"))
+luefter = data.frame(Alter = alter, Ausfall = ausfall)
+```
+
+Die binäre Variable `defekt` wird als Faktor mit 2 Ausprägungen (`Ja`, `Nein`) kodiert.
+
+# Beschreibung der Stichprobe
+
+```{r}
+summary(luefter)
+```
+
+Der Datensatz besteht somit aus 17 Beobachtungen mit einem metrischen Merkmal `Alter` sowie einem binären Merkmal `Ausfall`. Es gibt keine fehlenden Werte.
+
+```{r boxAlter, echo = FALSE, fig.cap = "Boxplot von \\emph{Alter}", fig.align = "center"}
+boxplot(luefter$Alter, horizontal = TRUE)
+```
+
+Die Verteilung von _Alter_ wird mit einem Boxplot dargestellt (siehe Abbildung \ref{fig:boxAlter}). Die Verteilung ist weder symmetrisch noch eindeutig links- oder rechtsschief, Ausreißer sind nicht zu erkennen. Die Daten befinden sich im Bereich $[2, 36]$ Monate, das arithmetische Mittel beträgt 21.8, der Median 20 Monate. Der Mittelwert wird also durch die Schiefe der Verteilung etwas nach oben verzerrt.
+
+```{r barAusfall, echo = FALSE, fig.cap = "Balkendiagramm von \\emph{Ausfall}", fig.align = "center"}
+barplot(table(luefter$Ausfall))
+```
+
+Der Boxplot von _Ausfall_ wird mit einem Balkendiagramm (siehe Abbildung \ref{fig:barAusfall}) dargestellt - 9 von 17 Lüftern sind insgesamt ausgefallen.
+
+# Deskriptive Analyse
+
+Zur Visualisierung der Anteile in Abhängigkeit vom Alter wird ein "Spinogram" verwendet:
+
+```{r}
+spineplot(Ausfall ~ Alter, data = luefter,
+          breaks = 3, ylevels = c("Ja","Nein"),
+          main = "Ausfälle von Lüftern nach Alter")
+```
+
+- Die Balkenbreite ist proportional zur Dichte der Daten im Bereich: die meisten Lüfter befinden sich in der Gruppe von 10-20 Monaten.
+
+- Die schwarzen Balken "highlighten" den Anteil der binären Variablen innerhalb jedes Bereichs: der Anteil der ausgefallenen Lüfter steigt an: Keiner der Lüfter, die weniger als 10 Monate alt sind, ist zum Zeitpunkt der Untersuchung ausgefallen. Sind die Lüfter zwischen 10 und 20 Monate alt, beträgt die Ausfallswahrscheinlichkeit ca. 30\%, bei einer Betriebsdauer zwischen 20 und 30 Monaten sind bereits vier von fünf Geräten ausgefallen. Von den Geräten, die älter als 30 Monate sind, funktioniert in der Stichprobe keines mehr.
+
+# Modell
+
+Da ein binäres Merkmal durch ein metrisches erklärt werden soll, wird ein logistisches Regressionsmodell geschätzt:
+
+\newpage
+
+```{r}
+model = glm(Ausfall ~ Alter, data = luefter, family = "binomial")
+pander(model, caption = "Parameterschätzung des Modells: Ausfall ~ Alter")
+```
+
+Beide Parameter sind knapp signifikant auf dem 0.05--Niveau.
+
+Das Modell für die Log-Chancen lautet:
+
+$$\log \frac{\mathsf{p}}{1-\mathsf{p}} = -6.9 + 0.33 \times \mathsf{Alter}$$
+
+Die Basischance für den Ausfall eines Lüfters, wenn dieser neu ist, beträgt somit $e^{-6.87}=0.001$, also 1:1000. Pro Monat multiplizieren sich die _Chancen_ eines Ausfalls mit $e^{0.33} = 1.39$, steigen also um fast 40\%.
+
+Die Effektstärke  wird mittels "binärem Regressionsplot" dargestellt:
+
+```{r}
+binreg_plot(model, pred_range ="xlim", jitter = 0.01,
+            main = "Effektplot für die Wahrscheinlichkeit\n eines Ausfalls, gegeben das Alter")
+```
+
+Der Einfluss von `Alter` auf Wahrscheinlichkeit von `Ausfall` ist am stärksten im mittleren Wertebereich von Alter (ca. 10--30 Monate). Bei neueren Lüftern (unter 10 Monate) geht die Ausfallswahrscheinlichkeit gegen 0, bei älteren (über 30 Monate) gegen 1. Auffällig ist die große Schwankungsbreite - das Modell liefert also sehr ungenaue Vorhersagen.
+ 
+# Modelldiagnostik
+
+Die Devianzanalyse liefert:
+
+```{r}
+pander(Anova(model), caption = "")
+```
+ 
+Das Modell hat demnach einen signifikant höheren Erklärungswert als das konstante Modell.
+
+Überprüfung der Normalverteilung der Residuen:
+
+```{r, out.width = "50%"}
+qqnorm(residuals(model))
+qqline(residuals(model))
+```
+
+Es sind kaum Auffälligkeiten zu erkennen (ein wenig an den Rändern).
+
+# Prognose
+
+Die Ausfallsprognose für Lüfter mit einem Alter von 25, 30 und 35 Monaten lautet:
+
+```{r}
+tmp = c(25, 30, 35)
+pred = predict(model, newdata = data.frame(Alter = tmp), type = "response")
+pander(cbind(Alter = tmp, `P(Ausfall)` = pred))
+```
+
+Laut dem Modell ist damit zu rechnen, dass vier von fünf Lüftern ausgefallen sind, wenn ihr Alter 25 Monate erreicht. Nach 30 Monaten beträgt die geschätzte Ausfallswahrscheinlichkeit schon über 95\%, nach 35 Monaten funktionieren Lüfter nur noch in Ausnahmefällen.

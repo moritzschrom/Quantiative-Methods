@@ -1,0 +1,1058 @@
+---
+title: "Cheat Sheet (für Fachkollegen)"
+author: "Moritz Schrom"
+date: "15 Jänner 2023"
+output: 
+  pdf_document:
+    toc: true
+---
+
+\newpage
+
+# Aufbau eines Berichts für Fachkollegen
+
+Im Folgenden wird auf die Abschnitte die ein Bericht für Fachkollegen normalerweise enthält genauer eingegangen. Siehe Skriptum 15.2.1 Aufbau eines statistischen Berichts.
+
+## Ausgangssituation
+
+Beschreibung der Ausgangssituation, inklusive Stichprobenumfang und Merkmalen samt Skalenniveau.
+
+Kurze Beschreibung des Ziels der Analyse, und der dahinterliegenden Fragestellung.
+
+## Datenmanagement
+
+In welcher Form liegen die Daten vor? Wie wurden diese eingelesen?
+
+Gibt es fehlende Werte und wie wurden diese behandelt?
+
+## Visualisierung
+
+Deskriptive Analyse der Stichprobe.
+
+Diagramm(e) samt Beschreibung: Gibt es Auffälligkeiten?
+
+Tabellen, Kennzahlen, samt verbaler Beurteilung dieser.
+
+Eventuelle ableitung allfälliger Hypothesen
+
+## Überprüfung der Fragestellungen (Tests, Konfidenzintervalle, Modelle, etc.)
+
+Bei Tests:
+
+* Angabe von Testbezeichnung
+* Begründung der Testauswahl (z.B. robuste Methoden bei Ausreißern etc.)
+* Null- und Alternativhypothese
+* Signifikanzniveau
+* P-Wert
+* Formale Schlussfolgerung (Vergleich P-Wert mit Signifikanzniveau)
+* Inhaltliche Schlussfolgerung
+
+Bei Modellen:
+
+* Begründung für die Wahl des Modells (z.B. abhängig vom Skalenniveau der abhängigen und unabhängigen Variablen)
+* Schätzung des Modells
+* Bei Regressionsmodellen: Ableitung der Modellformel, sowie Interpretation des Einflusses der unabhängigen Variablen auf die abhängige Variable ("Effektstärke"). Unterstützung via Effektplot bzw. Modellplot.
+* Beurteilung der Signifikanz der Parameter, sowie des Gesamtmodells.
+* Beurteilung der Modellgüte (z.B. R^2 bei linearer Regression)
+* Modelldiagnostik (Normalverteilung der Residuen, Restzusammenhang der Residuen mit den geschätzten Werten)
+* Diagramm mit erwarteten Werten (z.B. Regressionsgerade) samt Konfidenzbändern
+* Vorhersagen (erwartete Werte, bzw. Prognoseintervalle für Einzelwerte)
+
+## Fazit
+
+Zusammenfassung der Ergebnisse.
+
+Diskussion alffälliger Probleme.
+
+Generalisierbarkeit der Ergebnisse.
+
+\newpage
+
+# Einlesen von Daten
+
+Daten können in R auf unterschiedliche Arten eingelesen werden, je nach vorliegendem Quellformat (CSV-Datei, Reintext, ...) und gewünschtem Zielformat (Vektor, Dataframe, ...).
+
+Im Folgenden werden einige Möglichkeiten des Einlesens von Daten inklusive Beispielen demonstriert und erläutert.
+
+## Einlesen von Daten mit `scan()`
+
+Siehe [RDocumentation - scan: Read Data Values](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/scan)
+
+Die `scan()` Funktion in *R* ließt Text (entweder in Form einer String-Variable oder in Form einer Textdatei) ein, und wandelt diese in eine Liste oder einen Vektor um.
+
+Angenommen die Daten liegen in Form einer Textdatei `browser.txt` vor:
+
+```
+Liste an Browsern
+Firefox Firefox IE Firefox IE IE IE Firefox IE
+IE Chrome IE Chrome Firefox Firefox Chrome Firefox IE
+Firefox Opera Chrome IE Firefox Firefox IE Chrome IE
+IE IE IE IE Chrome Safari Safari Safari IE
+Safari Safari Chrome Opera Opera Chrome Chrome Opera Firefox
+Firefox Firefox Chrome Firefox Chrome IE Chrome Firefox Firefox
+Firefox Chrome Chrome Chrome IE Chrome
+```
+
+Mit Hilfe der `scan()` Funktion kann diese simple Textdatei eingelesen werden. Der `what` Parameter den Datentyp der zu lesenden Daten an. Mit dem `skip` Parameter können Zeilen am Beginn der Textdatei beim Einlesen übersprungen werden.
+
+
+```{r}
+daten = scan(file="browser.txt", what="A", skip=1)
+head(daten)
+as.factor(daten)
+```
+
+Alternativ kann der `scan()` Funktion auch Text übergeben werden.
+
+```{r}
+daten = scan(text="1 5 3 2 1 6 3 2 5 3 1 2", what=1)
+head(daten)
+```
+
+## Einlesen von Daten mit `read.table()`
+
+Siehe [RDocumentation - read.table: Data Input](https://www.rdocumentation.org/packages/utils/versions/3.6.2/topics/read.table)
+
+Oft haben wir es mit tabellarischen Daten zu tun, welche mehrere Merkmale beinhalten. Um mit solchen Datenstrukturen zu arbeiten bietet *R* DataFrames an. Daten können mit Hilfe der `read.table()` Funktion als DataFrame eingelesen werden.
+
+Angenommen, die Daten liegen in Form einer CSV-Datei `bugfixes.csv` vor:
+
+```
+"dauer" "programmierer" "bugtyp"
+120 "Eckkrammer" "NA"
+185 "Fischer" "Reporting"
+174 "Meyer" "DB"
+...
+```
+
+Mit Hilfe der `read.table()` Funktion kann die CSV-Datei als DataFrame eingelesen werden. Im Beispiel wird mit dem Paramter `header` angegeben ob die CSV-Datei Überschriften beinhaltet, der Paramter `sep` spezifiziert das Zeichen durch welches Felder begrenzt werden, mit dem Paramter `quote` werden gültige Quoting Zeichen angegeben. Bei den meisten CSV Files sind die Standardwerte für die Paramter, welche in der Dokumentation nachgelesen werden können, passend.
+
+```{r}
+daten = read.table(file="bugfixes.csv", header=TRUE, sep=" ", quote="\"")
+head(daten)
+```
+
+\newpage
+
+# Eine kategoriale Variable
+
+Es liegt eine Stichprobe mit 60 Beobachtungen und einem kategorialen Merkmal mit den Ausprägungen: _Firefox_, _IE_, _Chrome_, _Opera_ und _Safari_ vor. Es soll untersucht werden, ob die Kateogiren gleichverteilt sind.
+
+
+Einlesen der Daten als Vektor:
+```{r}
+daten = scan(file="browser.txt", what="A")
+browser = as.factor(daten)
+head(browser)
+```
+
+Überprüfen auf fehlende Werte:
+```{r}
+sum_na = sum(is.na(browser))
+sprintf("Es gibt %d fehlende Werte", sum_na)
+```
+
+Visualisieren der absoluten Häufigkeiten:
+```{r}
+browser_abs = table(browser)
+browser_rel = round(100 * prop.table(browser_abs), 1)
+
+barplot(browser_abs, main="Browserpopularität unter Mitarbeitern der Fa. X (N = 60)")
+abline(h=12, col="red")
+```
+
+Durchführen des Chi-squared Tests:
+```{r}
+chisq.test(browser_abs)
+```
+
+Die Nullhypothese lautet: Das Merkmal _Browser_ ist gleichverteilt. Der Wert der Teststatistik beträgt 15.83, der dazugehörige P-Wert 3.816e-09. Der Wert liegt unter dem Signifikanzniveau von 0.05, die Nullhypothese muss damit verworfen werden.
+
+Gesmatfazit: Die Umfragedaten sprechen gegen die Gleichverteilung der Browser unter allen Mitarbeitern.
+
+\newpage
+
+# Zwei kategoriale Variablen
+
+Es liegt eine Stichprobe mit 60 Beobachtungen und drei Kategorialen Merkmalen _Browser_, _Email_ und _Abteilung_ vor. Untersucht werden soll ein möglicher Zusammenhang zwischen _Browser_ und _Email_, sowie zwischen _Browser_ und _Abteilung_. Die Daten liegen in Form einer CSV-Datei vor.
+
+Einlesen der Daten als DataFrame:
+```{r}
+umfrage = read.table(file="umfrage.csv", sep=",", header=TRUE)
+summary(umfrage)
+```
+
+Überprüfen auf fehlende Werte:
+```{r}
+sum_na = sum(is.na(umfrage))
+sprintf("Es gibt %d fehlende Werte", sum_na)
+```
+
+Visualisieren der Einzelmerkmale:
+```{r}
+browser = table(umfrage$browser)
+browser
+barplot(browser, main = "Absolute Häufigkeiten von Browser (N=60)")
+
+email = table(umfrage$email)
+email
+barplot(email, main = "Absolute Häufigkeiten von Email (N=60)")
+
+abteilung = table(umfrage$abteilung)
+abteilung
+barplot(abteilung, main = "Absolute Häufigkeiten von Abteilung (N=60))")
+```
+
+Es handelt sich um zwei Merkmale,die pro Respondent erhoben wurden. Keines der Merkmale stellt ein offensichtliches Gruppierungsmerkmal dar. Es handelt sich daher um ein _Unabhängigkeitsproblem_.
+
+Ermitteln der Kontingenztabelle, sowohl absolut als auch relativ:
+
+```{r}
+tab_email_browser = with(umfrage, table(email, browser))
+library(pander)
+pander(tab_email_browser, justify = "right", emphasize.rownames = FALSE)
+tab_anteile = round(prop.table(tab_email_browser), 2) 
+pander(tab_anteile, justify = "right", emphasize.rownames = FALSE)
+```
+
+Visualisieren der beobachteten und erwarteten Werte mit einem Kacheldiagramm:
+
+```{r}
+library(vcd)
+tile(tab_email_browser, main = "Beobachtete Werte", abbreviate = c(email = 5))
+tile(tab_email_browser, type = "expected", main = "Erwartete Werte", abbreviate = c(email = 5))
+```
+
+## Zusammenhang zwischen Browser und Email
+
+Um die Unabhängigkeit von _Browser_ und _Email_ zu testen, wird ein Chi-squared Test durchgeführt. Auch hier lautet die Nullhypothese: _Browser_ und _Email_ sind gleicherteilt. Das Signifikanzniveau wird mit 0.05 festgelegt.
+
+```{r}
+chisq.test(tab_email_browser)
+# Aufgrund der Warnmeldung (zuwenig erwartete Werte in manchen Zellen) wird mittels simuliertem P-Wert nachkontrolliert
+chisq.test(tab_email_browser, simulate.p.value = TRUE, B = 10000)
+```
+
+Der P-Wert liegt mit 0.15 über dem Signifikanzniveau von 0.05, damit kann die Nullhypothese *nicht verworfen* werden. Mit den Daten ist kein Zusammenhang zwichen _Browser_ und _Email_ nachweisbar.
+
+## Zusammenhang zwischen Browser und Abteilung
+
+Bei der zweiten Fragestellung ist zu untersuchen, ob die Browser in den beiden Abteilungen gleich populär sind. _Abteilung_ stellt ein Gruppierungsmerkmal dar, es handelt sich daher um ein _Homogenitätsproblem_.
+
+Ermitteln der Kontingenztabelle:
+
+```{r}
+tab_abteilung_browser = with(umfrage, table(abteilung, browser))
+pander(tab_abteilung_browser, justify="right", emphasize.rownames=FALSE)
+
+tab_abt_rel = round(prop.table(tab_abteilung_browser, 1), 2) 
+pander(tab_abt_rel, justify="right", emphasize.rownames=FALSE)
+
+barplot(t(tab_abteilung_browser), main="Browserpopularität nach Abteilung", beside=TRUE, legend=TRUE)
+spineplot(tab_abteilung_browser, main="Browserpopularität nach Abteilung")
+```
+
+Um zu überprüfen ob die in der Stichprobe beobachteten Unterschiede auch auf die Grundgesmtheit zutreffen, wird ein Chi-squared Test mit Signifikanzniveau 0.05 durchgeführt:
+
+```{r}
+chisq.test(tab_abteilung_browser)
+# Aufgrund der Warnmeldung (zuwenig erwartete Werte in manchen Zellen) wird mittels simuliertem P-Wert nachkontrolliert
+chisq.test(tab_abteilung_browser, simulate.p.value = TRUE, B = 10000)
+```
+
+Der P-Wert liegt weit über dem Signifikanzniveau von 0.05, die Homogenitätshypothese wird also beibehalten: mit den Vorliegenden Daten kann _kein_ unterschiedliche Browser-Popularität in den beiden Abteilungen _Entwicklung_ und _Vertrieb_ nachgewiesen werden.
+
+\newpage
+
+# Eine metrische Variable
+
+Es liegt eine Stichprobe mit 22 Beobachtungen, davon ein fehlender Wert. Erhoben wurde ein metrisches Merkmal, die Bugfixdauer in Minuten. Vermutet wird eine mittlere Dauer von 170 Minutne in der Population.
+
+Die Daten liegen als Textdatei `bugfix.txt` vor:
+
+```
+66 174 188 161 157
+178 143 184 159 178
+157 183 152 174 189
+176 174 177 176 159
+207 ??
+```
+
+Daher werden sie mit `scan()` eingelesen:
+```{r}
+dauer = scan("bugfix.txt", na.strings="??")
+head(dauer)
+```
+
+Überprüfen auf fehlende Werte:
+```{r}
+sum_na = sum(is.na(dauer))
+sprintf("Es gibt %d fehlende Werte", sum_na)
+```
+
+Die *deskriptive Beurteilung* ist rein beschreibend. Im folgenden werden die Daten mittels Histogramm und Boxplot visualisiert:
+```{r}
+hist(dauer, freq = F)
+rug(dauer)
+```
+
+```{r}
+boxplot(dauer, horizontal=TRUE)
+```
+
+Die 5-Punkt Zusammenfassung liefert:
+```{r}
+summary(dauer)
+```
+
+Im Boxplot sind Ausreißer zu sehen, welche unser Histogramm verzerren. Daher wird das Histogramm ohne Ausreißer erneut gezeichnet:
+```{r}
+dauer2 = dauer[dauer > 70 & dauer < 200]
+hist(dauer2, freq = FALSE)
+rug(dauer2)
+```
+
+Die Form des Histogramms kann als *mehrgipfelig* beschrieben werden (Häufungspunkte in den Bereichen [150, 160] und [170, 190]). Die Daten sind eher im rechten Bereich (ab 170) konzentriert.
+
+Dem Boxplot entnimmt man ebenfalls, dass die Verteilung **linksschief** ist (Median in den rechten Bereich der Box verschoben). 50% der Daten liegen im Bereich 159 bis 178 (Boxgrenzen = 1. und 3. Quartil), der Median bei 174. Aufgrund der Schiefe weicht er deutlich vom arithmetischen Mittel (167.2) ab. Die beiden Ausreißer bilden Minimum (66) und Maximum (207) der Verteilung, die Spannbreite daher 141.
+
+```{r}
+sd(dauer, na.rm = TRUE)
+```
+
+```{r}
+mad(dauer, na.rm = TRUE)
+```
+
+Das Merkmal hat eine Standardabweichung von 27.46 vom Mittel 167.2, das robuste Streumaß Medmed (Median der Abweichungen vom Median) beträgt hingegen nur 19.27. Die Standardabweichung ist durch die Ausreißer stark verzerrt.
+
+## Schlussfolgerung
+
+Aufgrund der Ausreißer kann kein Konfidenzintervall für den Mittelwert ermittelt, oder t-Test durchgeführt werden. Stattdessen wird ein Wilcoxon-Test mit der Nullhypothese: "Der Median in der Population beträgt 170" auf dem Signifikanzniveau 0.05 durchgeführt:
+
+```{r}
+wilcox.test(dauer, mu = 170, conf.int = TRUE)
+```
+
+Der P-Wert ist mit 0.93 weit über dem Signifikanzniveau, und kann nicht verworfen werden. Die Warnung kann aufgrund der Deutlichkeit des Ergebnisses ignoriert werden.
+Ein Konfidenzintervall für den Median beträgt [164, 178.5] - in diesem kann der wahre Median vermutet werden, ohne dass die vorliegenden Daten dagegen sprechen. Es enthält insbesondere die vermuteten 170 Minuten.
+
+*Fazit:* Die Daten sprechen nicht gegen die Annahme, dass der Median der Bugfixdauer in der Grundgesamtheit (alle Bugs) 170 Minuten beträgt.
+
+\newpage
+
+# Zwei metrische Variablen (Korrelation)
+
+Für 21 Bugs wurden vier metrische Merkmale erhoben:
+
+* Behebungsdauer in Minuten (_dauer_)
+* Anzahl der Codezeilen (_codelines_)
+* Anzahl der Use Cases (_usecases_)
+* Alter des Programmierers (_alter_)
+
+Ziel ist der Nachweis eines möglichen (linearen) Zusammenhangs zwischen der Behebungsdauer und der Programmgröße (Codezeilenanzahl)
+
+Es liegt erneut ein Datensatz zum Thema Bugfixes als CSV-Datei `bugfixes2.csv` vor:
+```
+"dauer" "codelines" "usecases" "alter"
+120 183000 49 35
+174 386000 86 44
+188 467000 95 37
+...
+```
+
+Einlesen mit `read.table()`:
+```{r}
+bugfixes = read.table("bugfixes2.csv", header = TRUE)
+head(bugfixes)
+```
+5-Punkt-Zusammenfassung:
+```{r}
+summary(bugfixes)
+```
+
+Stichprobengröße:
+```{r}
+sum(complete.cases(bugfixes))
+```
+
+Bevor ein möglicher Zusammenhang untersucht wird, sollten die Daten inkl. Merkmale immer vorab deskriptiv untersucht werden:
+```{r}
+summary(bugfixes$dauer)
+summary(bugfixes$codelines)
+```
+
+Mit Hilfe von Boxplots kann auch ein emögliche mehrgipfeligkeit oder Schiefe der Daten (linksschief, rechtsschief, symmetrisch) untersucht werden. Darauf wird hier verzichtet, für mehr Informationen siehe _Eine metrische Variable_.
+
+Die gemeinsame Verteilung der Variablen kann als Streudiagramm dargestellt werden:
+
+```{r}
+plot(dauer ~ codelines, data=bugfixes, main="Dauer in Abhängigkeit von Codelines (N=21)")
+```
+
+Das Diagram lässt schon eine positive Korrelation vermutet. Um den Datensatz auf eine Korrelation zu untersuchen, werden Tests durchgeführt (zuerst nach Pearson, anschließend nach Spearman).
+
+Die Nullhypothese lautet jeweils. Die Korrelation der Population beträgt 0, die Alternative: Sie ist ungleich 0. Das Signifikanzniveau betrgät 0.05.
+
+## Korrelation nach Pearson:
+
+```{r}
+cor.test(~ dauer + codelines, data=bugfixes)
+```
+
+Die P-Wert beträgt 0.0094 und liegt unter dem Signifikanzniveau von 0.05. Die Nullhypothese muss demnach verworfen werden: die Daten sprechen für eine Korrelation (nach Pearson). Das 95%-Konfidenzintervall beträgt [0.157, 0.794], die Schätzung von 0.55 ist damit sehr ungenau: der Bereich lässt Werte von "nicht korreliert" bis "stark korreliert" zu.
+
+## Korrelation nach Spearman:
+Die Korrelation naach Spearman basiert auf Rängen, und ist bei einer so starken Streuung wie sie vorliegt ein robustes Maß.
+
+```{r}
+cor.test(~ dauer + codelines, data = bugfixes, method = "spearman", )
+```
+
+Der P-Wert beträgt 0.06 und liegt knapp über dem Signifikanzniveau von 0.05. Die Nullhypothese kann demnach nicht verworfen werden. Die Daten sprechen nicht für eine Korrelation (nach Spearman).
+
+*Fazit:* Bei Verwendung eines robusten Korrelationsmaßes (Spearman) kann kein Zusammenhang zwischen der Programmgröße und der Bugfixdauer nachgewiesen werden. Bei der Korrelation nach Pearson ist der Zusammenhang schwach und die Schätzung – aufgrund des geringen Stichprobenumfangs und der hohem Streuung – sehr ungenau.
+
+\newpage
+
+# Zwei metrische Variablen (Regresison)
+
+Es liegt derselbe Datensaz `bugfixes2.csv` wie beim Beispiel für Korrelation vor (Siehe _Zwei metrische Variablen (Korrelation)_).
+
+Ziel der Untersuchung ist die Ermittlung eines Prognosemodells für die Behebungsdauer in Abhängigkeit der Codezeilenzahl sowie der Erstellung von Vorhersagen für 200.000 und 600.000 Codezeilen.
+
+Erneut werden die Daten mit `read.table()` eingelesen:
+```{r}
+options(scipen = 9999)
+bugfixes = read.table("bugfixes2.csv", header = TRUE)
+head(bugfixes)
+```
+
+Auf die deskriptive Analyse, welche hier für die Einzelmerkmale folgen sollte wird verzichtet. Für mehr Informationen siehe _Zwei metrische Variablen (Korrelation)_ oder _Eine metrische Variable_.
+
+## Modellschätzung
+Mit `lm()` wird ein lineares Modell angepasst. Mit `summary()` kann eine Modellübersicht erstellt werden:
+
+```{r}
+model = lm(dauer ~ codelines, data = bugfixes)
+summary(model)
+```
+
+Sowohl Achsenabschnitt, wie auch der Koeffizient _codelines_ sind signifikant auf dem 0.05-Niveau (Der P-Wert beträgt 0.009477). Das Bestimmtheitsmaß _R-squared_ beträgt 0.30, das bedeutet das Modell erklärt rund 30% der Varianz von _dauer_.
+
+Die Regressionsgleichung lautet:
+
+```
+E(dauer|codelines) = 130.28 + 0.00011 codelines
+```
+
+Ermitteln deer 95%igen Konfidenzintervalle für die Paramter:
+```{r}
+round(confint(model), 5)
+```
+
+Die paramter weißen eine hohe Schwankungsbreite auf: Der Grundaufwand beträgt zwischen 100 und 160 Minuten, und für jeweils 100.000 Codezeilen können zwischen 3 und 19 Minuten hinzukommen. Die Schätzung ist also sehr ungenau.
+
+## Modelldiagnostik
+
+Vor der Prognose ist die Gültigkeit der Modellannahme zu testen.
+
+Kontrollieren der Normalverteilung der Residuen, mit einem Q-Q-Plot gegen die theorethischen Werte der Normalverteilung.
+
+```{r}
+qqnorm(residuals(model))
+qqline(residuals(model))
+```
+
+Untersuchung der Varianzhomogenität der Residuen: Sind die Varianzen gleich? Schwer zu beurteilen aufgrund des geringen Stichprobenumfangs.
+```{r}
+plot(residuals(model) ~ bugfixes$codelines)
+abline(h = 0)
+```
+
+Korrekte Modellspezifikation durch Streudiagramm gegen die geschätzen Werte: Gibt es eine Reststruktur in den Residuen? Es ist keine Struktur zu sehen, daher OK.
+```{r}
+plot(fitted(model) ~ residuals(model),
+     xlab = "Residuen", ylab = "Geschätzte Werte",
+     main = "Residuen gegen geschätzte Werte")
+```
+
+## Prognose
+
+Es sind Vorhersagen für die 200.000 und 600.000 Codezeilen zu erstellen:
+
+```{r}
+newdata = data.frame(codelines = c(200000, 600000)) 
+newdata
+```
+
+Punkt- und Intervallprognosen der _erwarteten_ Bugfixdauer-Werte:
+
+```{r}
+pred = predict(model, newdata, interval = "confidence")
+cbind(newdata, pred)
+```
+
+Die Intervallprognosen für die Einzelwerte lauten:
+```{r}
+pred = predict(model, newdata, interval = "prediction")[,-1] 
+cbind(newdata, pred)
+```
+
+Das folgende Diagramm stellt das Streudiagramm samt Regressionsgerade (rot), Konfidenzbänder (blau) und Prognosekanal (violett) dar. Aufgrund der starken Streuung ist die Schätzung der Geraden, und besonders jene der Einzelprognosen, sehr ungenau.
+
+```{r}
+# 100 x-Werte erzeugen
+x = seq(from = min(bugfixes$codelines), 
+        to = max(bugfixes$codelines),
+        length = 100)
+newdata = data.frame(codelines = x)
+
+# Werte für Konfidenzband
+konfband = predict(model, newdata, interval = "confidence")
+head(konfband)
+
+# Werte für Prognosekanal
+progkanal = predict(model, newdata, interval = "predict")
+head(progkanal)
+
+# Streudiagramm
+plot(dauer ~ codelines, data = bugfixes,
+     main = "Bugfixdauer in Abhängigkeit der Codezeilen (N=21)")
+
+# Regressionsgerade = erwartete Werte
+abline(model, col = "red")
+
+# Konfidenzband für erwartete Werte
+lines(x, konfband[,"lwr"], col = "blue")
+lines(x, konfband[,"upr"], col = "blue")
+
+# Prognoskanal für Einzelwerte
+lines(x, progkanal[,"lwr"], col = "magenta")
+lines(x, progkanal[,"upr"], col = "magenta")
+```
+
+Visuelle Unterstützung für Korrelationen:
+```{r}
+library(corrplot)
+cor.daten <- cor(bugfixes)
+corrplot(cor.daten, method = "ellipse") 
+corrplot(cor.daten, method = "pie")
+corrplot(cor.daten, method = "number", type = "lower")
+```
+
+\newpage
+
+# Metrische und kategoriale Variablen
+
+## Einfache ANOVA
+
+In einer Softwareentwicklungsfirma wurden für 21 Bugs unter anderem zwei Merkmale erhoben:
+
+* Behebungsdauer in Minuten (_dauer_)
+* Programmierer (_programmierer_)
+
+Es gilt zu untersuchen, ob es einen Unterschied zwischen den Programmieren gibt?
+
+Die Daten liegen erneut als CSV-Datei `bugfixes3.csv` vor:
+
+```
+"dauer" "programmierer" "bugtyp"
+120 "Eckkrammer" "GUI"
+174 "Meyer" "DB"
+188 "Meyer" "GUI"
+...
+```
+
+Einlesen mit `read.table()`:
+```{r}
+bugfixes = read.table("bugfixes3.csv", header = TRUE)
+head(bugfixes)
+```
+
+Die Verteilung der Bugfix-Dauer, gruppiert nach Programmierern wird mit parallellen Boxplots visualisiert: 
+```{r}
+boxplot(dauer ~ programmierer, data = bugfixes)
+abline(h = median(bugfixes$dauer))
+```
+
+Die 5-Punkt-Zusammenfassungen nach Programmierer lauten:
+```{r}
+aggregate(dauer ~ programmierer, data = bugfixes, summary)
+```
+
+Programmierer Eckkrammer scheint deutlich schneller zu sein als seine beiden Kollegen.
+
+### Varianzanalyse
+
+Um die Hypothese in der Grundgesamtheit zu testen, wird eine einfache Varianzanalyse verwendet. Zunächst muss die Voraussetzung der Varianzhomogenität mit dem Levene-Test überprüft werden:
+
+```{r}
+
+library(car)
+leveneTest(dauer ~ programmierer, data = bugfixes)
+```
+
+Dieser ist nicht signifikant, die ANOVA kann somit durchgeführt werden. Zunächst wird ein Regressionsmodell (mit _dauer_ als abhängige und _programmierer_ als unabhängige Variable) angepasst:
+
+```{r}
+model = lm(dauer ~ programmierer, data=bugfixes)
+```
+
+Die ANOVA-Tabelle lautet:
+```{r}
+anova(model)
+```
+
+Der F-Test für den Faktor _programmierer_ verwirft die Nullhypothese: "Alle Gruppenmitglieder sind gleich" auf dem 0.05-Niveau. Die drei Programmierer arbeiten also nicht gleich schnell.
+
+Die Summary des Regressionsmodells lautet:
+```{r}
+summary(model)
+```
+
+Der Erklärungswert des Modells ist 63.8% und ist signifikant auf dem 0.05-Niveau. Der Achsenabschnitt repräsentiert die Bugfix-Dauer von Programmierer "Eckkramer" und ist signifikant, ebenso wie die Koeffizienten für die anderen beiden Programmierer. Diese sind signifikant langsamer als Programmierer Eckkramer. Der Effekt-Plot fasst dies grafisch zusammen:
+
+```{r}
+library(effects)
+plot(allEffects(model))
+```
+
+Auch hier sollte die Normalverteilung der Residuen mittels Q-Q-Plot visualisiert werden. Dies wird bewusst ausgelassen. Siehe _Zwei metrische Variablen (Korrelation)_.
+
+## Zweifache ANOVA
+
+In einer Softwareentwicklungsfirma wurden für 21 Bugs (keine fehlenden
+Werte) folgende drei Merkmale erhoben:
+
+* Behebungsdauer in Minuten (_dauer_)
+* Programmierer (_programmierer_)
+* Bugtyp (_bugtyp_)
+
+Gibt es einen Einfluss der jeweiligen Fakoren? Gibt es eine Wechselwirkung?
+
+Die Daten liegen in derselben CSV-Datei `bugfixes3.csv` vor (Siehe _Einfache ANOVA_).
+
+Einlesen mit `read.table()`:
+```{r}
+bugfixes = read.table("bugfixes3.csv", header = TRUE)
+head(bugfixes)
+```
+
+Visualisieren der Verteilung der Bugfix-Dauer mit parallellen Boxplots:
+
+```{r}
+par(oma = c(1,6,1,1))
+boxplot(dauer ~ bugtyp + programmierer, bugfixes, las = 1, horizontal = TRUE)
+abline(v = median(bugfixes$dauer), col = "red")
+abline(h = c(3.5, 6.5))
+```
+
+### Varianzanalyse
+
+Um die Hypothesen: "Alle Programmierer sind gleich schnell" sowie: "Bugs verschiedenen Typs werden gleich schnell gefixt" in der Grundgesamtheit zu testen, wird eine zweifache Varianzanalyse ohne Wechselwirkungen verwendet.
+
+Vorab wird erneut die Homogenität der Varianzen mit dem Levene-Test überprüft:
+
+```{r}
+library(car)
+leveneTest(dauer ~ programmierer * bugtyp, data = bugfixes)
+```
+Dieser ist nicht signifikant, daher kann mit der ANOVA fortgefahren werden. 
+
+Dazu wird ein lineares Modell erstellt:
+```{r}
+model = lm(dauer ~ programmierer + bugtyp, data = bugfixes)
+```
+
+Die ANOVA-Tablle lautet: 
+```{r}
+library(car)
+Anova(model) # ACHTUNG: Anova(model) != anova(model)
+```
+
+Der Faktor _programmierer_ ist signifikant, _bugtyp_ jedoch nicht.
+
+Wie immer wird auch eine Zusammenfassung des Modells ausgegeben:
+```{r}
+summary(model)
+```
+Es hat eien Erklärungswert von 65.9% und ist signifikant auf dem 0.05-Niveau.
+
+Prüfen wir nun die Frage nach einer möglichen *Wechselwirkung* zwischen _programmierer_ und _bugtyp_. Hierzu wird ein Regressionsmodell mit zusätzlichem Interaktionsterm geschätzt:
+```{r}
+model = lm(dauer ~ programmierer * bugtyp, data = bugfixes)
+```
+
+Die ANOVA-Tabelle lautet:
+```{r}
+Anova(model)
+```
+
+Die Signifikanzen der Haupteffekte ändern sich nicht (Programmierer signifikant, Bugtyp nicht), der Interaktionsterm ist signifikant. Es besteht also ein gemeinsamer
+Einfluss von Programmierer und Bugtyp auf die Bugfix-Dauer.
+Die Auswirkungen der jeweiligen Faktorkombinationen sind im Effekt-Plot grafisch dargestellt:
+
+```{r}
+library(effects)
+plot(allEffects(model))
+```
+
+Es fällt zunächst auf, dass für alle drei Bugtypen Programmierer Eckkrammer signifikant schneller als die Kollegen arbeitet (in Einklang mit dem signifikanten Haupteffekt). Bei GUI-Bugs unterscheiden sich alle drei Kollegen signifkant voneinander: hier sind die Unterschiede somit besonders stark ausgeprägt (Wechselwirkungseffekt).
+
+\newpage
+
+# Zeitreihenanalyse
+
+## Langfristprognose
+
+Für einen IT-Händler sind die monatlichen Absatzzahlen von PCs für die Jahre 2015--2017 erhoben worden. Es ist ein Vorhersagemodell für Langfrist-Prognosen zu erstellen und die Entwicklung im Jahr 2018 vorherzusagen.
+
+Die Daten liegen als Text vor, und werden daher mit `scan()` eingelesen und in eine Zeitreihe umgewandelt:
+```{r}
+x = scan(text = "779  703  772  781  768  765 599 403  712  707  770  777
+                1014  929 1008 1025 1010  996 738 448 1053 1042 1010 1022
+                1048  973 1042 1059 1044 1030 572 382 1087 1076 1044 1056")
+ist = ts(x, start = c(2015,1), freq = 12)
+ist
+```
+
+Stichprobengröße, fehlende Werte:
+
+```{r}
+length(x)
+sum(is.na(x))
+```
+
+Numerische Beschreibung:
+```{r}
+summary(ist)
+```
+
+Der mittlere Absatz über den Beobachtungszeitraum beträgt rd. 868 Stück; das Minimum lag bei 382, das Maximum bei 1087 Stück.
+
+Das Zeitreihendiagramm sieht wie folgt aus:
+```{r}
+plot(ist, main = "Monatliche Absatzzahlen von PCs (N = 36)")
+abline(h = mean(ist), lty = "dotted")
+```
+
+Die gestrichelte Gerade stellt den durchschnittlichen Absatz in den Jahren dar. Betrachtet man nun den Verlauf der Zeitreihe, fallen die periodisch auftretenden, starken Absatzeinbrüche jeweils zu Jahresmitte auf. Dies ist vermutlich auf das typische *Sommerloch* im Handel zurückzuführen. Ein kleinerer Einbruch könnte im Jänner zu beobachten sein (möglicherweise in Folge der vorgezogenen Käufe zu Weihnachten?). Des weiteren dürfte es generell einen Aufwärtstrend in den Absatzzahlen geben, mit einem stärkeren Sprung von 2015 auf 2016.
+
+Für eine nähere Betrachtung wird die Zeitreihe in Trend- und Saisonkomponente
+zerlegt und diese dargestellt:
+
+```{r}
+dec = decompose(ist)
+plot(dec)
+```
+
+Der vermutete Aufwärtstrend (mit Sprung vom 1. zum 2. Jahr) ist gut in der Trendkomponente zu erkennen, ebenso wie der Saisoneffekt. Betrachten wir die Saisonfigur genauer:
+
+```{r}
+monthplot(dec$seasonal)
+```
+
+### Prognosemodell
+
+Für die Vorhersage wird ein Regressionsmodell geschätzt:
+
+```{r}
+t = time(ist)
+s = as.factor(cycle(ist))
+model = lm(ist ~ t + s)
+```
+
+Die Modellzusammenfassung lautet:
+
+```{r}
+summary(model)
+```
+
+Das Modell hat einen sehr hohen Erkärungswert von fast 87%. Achsenabschnitt und Trend sind signifikant, wie auch die Saisoneffekte im Juli und August. 
+
+Die Regressionsgleichung für den erwarteten Absatz, gegeben Zeit und Saison, lautet:
+
+    E(Ist|t,s) = -240721 + 119.87 t -88.66 (s == "Februar") -26.31 (s == "März") ...
+    
+(Zahlencodierung der Monate zwecks Klarheit durch Text ersetzt.)    
+
+### Diagnostik
+Vor einer Prognose ist die Gültigkeit der Modellannahmen zu
+überprüfen. Aufgrund des geringen Stichprobenumfangs ist zunächst jedenfalls
+die Normalverteilung der Residuen zu kontrollieren, dies erfolgt mit
+einem Q-Q-Plot gegen die theoretischen Werte der Normalverteilung:
+
+```{r}
+qqnorm(residuals(model))
+qqline(residuals(model))
+```
+
+Es ist eine starke Korrelation der Residuen mit den theoretischen
+normalverteilten Werten zu erkennen. Ein paar Punkte oben rechts weichen jedoch vom Schema ab:
+
+```{r}
+plot(residuals(model) ~ fitted(model))
+```
+
+Des weiteren ist die korrekte Modellspezifikation durch ein
+Streudiagramm der Residuen gegen die geschätzten Werte zu überprüfen. Bis auf ein paar Häufungspunkte sind keine auffälligen
+Strukturen im Streudiagramm zu erkennen, das lineare Modell dürfte die
+in den Daten vorhandene Information gut abdecken.
+
+```{r}
+plot(residuals(model) ~ t)
+abline(h = 0)
+```
+
+Drittens ist die Varianzhomogenität der Residuen zu überprüfen. Dies erfolgt mit einem Diagramm der Residuen gegen die Zeit (siehe Abbildung \ref{fig:resid}). Die Residuen weisen auffällig hohe Veränderungen in den Sommemonaten 2015 und 2017 auf, die Abweichungen des Modells von den historischen Daten sind hier größer als im übrigen Zeitraum. Das Modell fängt den Saisoneffekt offenbar nicht ideal ein. Im übrigen scheint sich die Streuung nicht systematisch mit der Zeit zu verändern.
+
+### Prognose
+
+Für die Prognose des Folgejahres werden zunächst die Zukunftswerte der
+unabhängigen Variablen generiert:
+```{r}
+newdata = data.frame(t = seq(from = 2018, by = 1/12, length = 12), 
+                     s = as.factor(1:12))
+newdata
+```
+
+und für diese die Prognose erstellt:
+
+```{r}
+tmp = predict(model, newdata)
+pred = ts(tmp, start = c(2018, 1), frequency = 12)
+pred
+```
+
+In der grafischen Darstellung wird zusätzlich der Prognosekanal
+eingezeichnet:
+
+```{r}
+## Ist-Werte
+plot(ist,
+     main = "PC-Istabsatz 2015-2017, samt Prognose für 2018",
+     xlim = c(2015, 2019), ylim = c(300, 1500))
+
+## Erwartete Werte
+fit = ts(c(fitted(model), pred), start = start(ist), freq = frequency(ist))
+lines(fit, col = "red")
+
+## Prognoseintervalle
+conf = predict(model, newdata, interval = "prediction")
+
+## Unteres Band
+lwr = ts(conf[,2], start = 2018, freq = 12)
+lines(lwr, col = "black", lty = "dotted")
+
+## Oberes Band
+upr = ts(conf[,3], start = 2018, freq = 12)
+lines(upr, col = "black", lty = "dotted")
+```
+
+Die geschätzten Werte (rot) folgen in etwa dem Verlauf der Daten, mit deutlichen Abweichungen besonders in den ersten 2 Jahren. Durch den Sprung von Jahr 2015 zum Jahr 2016 ist die Schätzung des Trends verzerrt. Das Prognoseband zeigt eine große Schwankungsbreite und entsprechende Ungenauigkeit der Vorhersagen.
+
+**Variante:**
+
+Für die Prognose von Juli 2018 bis Juni 2019 werden zunächst die Zukunftswerte der
+unabhängigen Variablen generiert:
+
+```{r}
+newdata = data.frame(t = seq(from = 2018.5, by = 1/12, length = 12), 
+                     s = as.factor(c(7:12, 1:6)))
+newdata
+```
+
+und für diese die Prognose erstellt:
+
+```{r}
+tmp = predict(model, newdata, interval = "predict")
+pred = ts(tmp, start = c(2018, 7), frequency = 12)
+pred
+```
+
+In der grafischen Darstellung wird zusätzlich der Prognosekanal
+eingezeichnet:
+
+```{r}
+## Ist-Werte
+plot(ist,
+     main = "PC-Istabsatz 2015-2017, samt Prognose für 2018/19",
+     xlim = c(2015, 2020), ylim = c(300, 1800))
+
+## Erwartete Werte
+fit = ts(fitted(model), start = start(ist), freq = frequency(ist))
+lines(fit, col = "red")
+
+## Prognose
+lines(pred[,"fit"], col = "red")
+lines(pred[,"lwr"], col = "blue", lty = "dotted")
+lines(pred[,"upr"], col = "blue", lty = "dotted")
+
+```
+
+## Kurzfristprognose
+
+Für einen PC-Assemblierer soll der tägliche Bedarf an Schrauben, die in der Montageabteilung benötigt werden, für die Beschaffungsplanung vorhergesagt werden. Es stehen die Werte der letzten vier Wochen zur Vefügung (Freitags wird nur bis Mittag gearbeitet).
+
+Die Daten wurden mit `scan()` eingelesen und in eine Zeitreihe umgewandelt:
+
+```{r}
+x = scan(text = "200 198 200 199  99
+                 211 209 211 209 105
+                 220 220 218 220 109
+                 231 228 232 231 114")
+
+schrauben = ts(x, frequency = 5)
+```
+
+Das Zeitreihendiagramm sieht wie folgt aus:
+
+```{r out.width="0.7\\linewidth",fig.align="center"}
+plot(schrauben, main = "Schraubenbedarf über 4 Wochen (N = 20)")
+```
+
+Für eine nähere Betrachtung wird die Zeitreihe in Trend- und Saisonkomponente zerlegt und diese dargestellt:
+
+```{r}
+dec = decompose(schrauben)
+plot(dec)
+```
+
+Der vermutete Aufwärtstrend ist gut in der
+Trendkomponente zu erkennen, die nahezu konstant ansteigt, ebenso wie der Saisoneffekt. Betrachten wir die Saisonfigur genauer:
+
+```{r}
+monthplot(dec$seasonal)
+```
+
+Im wesentlichen erfolgt am Freitag eine deutliche Reduktion (minus 80 Stück) des Schraubenbedarfs gegenüber dem Basisniveau -- bedingt durch die geringere Arbeitsleistung aufgrund des früheren Arbeitsschlusses. 
+
+### Modellschätzung
+
+Für die Kurzfrist-Prognose der kommenden Tage wird ein *HoltWinters-Modell* mit Saison- und Trendkomponente verwendet:
+
+```{r}
+model = HoltWinters(schrauben)
+model
+```
+
+Bei der automatischen Anpassung der Glättungsparameter wurde für $\alpha$ (Parameter für Achsenabschnitt) 25% gewählt (Berücksichtigung der aktuellen Werte nur zu 25%); für $\beta$ (Parameter für Trend) der Wert 0 (nur die vergangenen Werte waren für die Schätzung relevant); für $\gamma$ (Parameter für Saison) der Wert 1 (nur die aktuellsten Werte waren jeweils für die Schätzung ausschlaggebend).
+
+Das Prognosemodell lautet:
+$$Y_{t+k} = 209.36 + 2.011 k + 29.07 (s = 1) + 24.37(s=2) + 25.25(s=3) + 21.98(s=4) -95.36(s=5)$$
+
+wobei $k$ den $k$-ten Messpunkt (also Tag) in der Zukunft darstellt.
+Der Basisbedarf beträgt somit rd. 209 Stück, erhöht sich pro Tag um 2 Stück, und wird je nach Wochentag um 22 bis 29 Stück nach oben, aber am Freitag um rd. 95 Stück nach unten 
+korrigiert.
+
+Die Prognose für die nächsten 5 Tage (samt Prognoseintervalle) lautet:
+
+```{r}
+pred = predict(model, n.ahead = 5, prediction.interval = TRUE)
+pred
+```
+
+und ist samt den Ursprungsdaten in folgendem Diagramm dargestellt:
+
+```{r}
+plot(model, predicted.values = pred)
+```
+
+\newpage
+
+# Logistische Regression
+
+In einer Firma wurden in einem Serverraum Lüfter verschiedenen Alters (in Monaten) auf ihre Funktionsfähigkeit überprüft:
+
+-----------------------------------------------------------------------------------------
+       &nbsp;    1   2   3   4   5   6   7   8   9   10   11   12   13   14   15   16   17
+------------- --- --- --- --- --- --- --- --- --- ---- ---- ---- ---- ---- ---- ---- ----
+    **Alter**   2  10  12  16  17  18  19  19  20   21   25   27   29   30   34   36   36
+
+  **Ausfall**  F   F   F   F   F   T   F   F   T    T    F    T    T    T    T    T    T
+--------------------------------------------------------
+
+Kann man die Ausfallswahrscheinlichkeit durch das Alter vorhersagen? Wie lautet diese für 25, 30 und 35 Monate?
+
+Einlesen der Daten mittels `scan()`. Die binäre Variable `defekt` wird als Faktor mit 2 Ausprägungen (`Ja`, `Nein`) kodiert:
+```{r}
+alter = scan(text = "2 10 12 16 17 18 19 19 20 21 25 27 29 30 34 36 36")
+defekt = scan(text = "F  F  F  F  F  T  F  F  T  T  F  T  T  T  T  T  T", what = TRUE)
+ausfall  = factor(defekt, labels = c("Nein","Ja"))
+luefter = data.frame(Alter = alter, Ausfall = ausfall)
+```
+
+Die Verteilung von _Alter_ wird mit einem Boxplot dargestellt. Die Verteilung ist weder symmetrisch noch eindeutig links- oder rechtsschief, Ausreißer sind nicht zu erkennen. Die Daten befinden sich im Bereich $[2, 36]$ Monate, das arithmetische Mittel beträgt 21.8, der Median 20 Monate. Der Mittelwert wird also durch die Schiefe der Verteilung etwas nach oben verzerrt:
+
+```{r}
+boxplot(luefter$Alter, horizontal = TRUE)
+```
+
+Der Boxplot von _Ausfall_ wird mit einem Balkendiagramm (siehe Abbildung \ref{fig:barAusfall}) dargestellt - 9 von 17 Lüftern sind insgesamt ausgefallen:
+```{r}
+barplot(table(luefter$Ausfall))
+```
+
+Zur Visualisierung der Anteile in Abhängigkeit vom Alter wird ein "Spinogram" verwendet:
+
+```{r}
+spineplot(Ausfall ~ Alter, data = luefter,
+          breaks = 3, ylevels = c("Ja","Nein"),
+          main = "Ausfälle von Lüftern nach Alter")
+```
+
+- Die Balkenbreite ist proportional zur Dichte der Daten im Bereich: die meisten Lüfter befinden sich in der Gruppe von 10-20 Monaten.
+
+- Die schwarzen Balken "highlighten" den Anteil der binären Variablen innerhalb jedes Bereichs: der Anteil der ausgefallenen Lüfter steigt an: Keiner der Lüfter, die weniger als 10 Monate alt sind, ist zum Zeitpunkt der Untersuchung ausgefallen. Sind die Lüfter zwischen 10 und 20 Monate alt, beträgt die Ausfallswahrscheinlichkeit ca. 30\%, bei einer Betriebsdauer zwischen 20 und 30 Monaten sind bereits vier von fünf Geräten ausgefallen. Von den Geräten, die älter als 30 Monate sind, funktioniert in der Stichprobe keines mehr.
+
+## Modell
+
+Da ein binäres Merkmal durch ein metrisches erklärt werden soll, wird ein logistisches Regressionsmodell geschätzt:
+
+```{r}
+model = glm(Ausfall ~ Alter, data = luefter, family = "binomial")
+pander(model, caption = "Parameterschätzung des Modells: Ausfall ~ Alter")
+```
+
+Beide Parameter sind knapp signifikant auf dem 0.05--Niveau.
+
+Die Effektstärke  wird mittels "binärem Regressionsplot" dargestellt:
+
+```{r}
+binreg_plot(model, pred_range ="xlim", jitter = 0.01,
+            main = "Effektplot für die Wahrscheinlichkeit\n eines Ausfalls, gegeben das Alter")
+```
+
+Der Einfluss von `Alter` auf Wahrscheinlichkeit von `Ausfall` ist am stärksten im mittleren Wertebereich von Alter (ca. 10--30 Monate). Bei neueren Lüftern (unter 10 Monate) geht die Ausfallswahrscheinlichkeit gegen 0, bei älteren (über 30 Monate) gegen 1. Auffällig ist die große Schwankungsbreite - das Modell liefert also sehr ungenaue Vorhersagen.
+
+## Modelldiagnostik
+
+Die Devianzanalyse liefert:
+
+```{r}
+pander(Anova(model), caption = "")
+```
+ 
+Das Modell hat demnach einen signifikant höheren Erklärungswert als das konstante Modell.
+
+Überprüfung der Normalverteilung der Residuen:
+
+```{r, out.width = "50%"}
+qqnorm(residuals(model))
+qqline(residuals(model))
+```
+
+Es sind kaum Auffälligkeiten zu erkennen (ein wenig an den Rändern).
+
+## Prognose
+
+Die Ausfallsprognose für Lüfter mit einem Alter von 25, 30 und 35 Monaten lautet:
+
+```{r}
+tmp = c(25, 30, 35)
+pred = predict(model, newdata = data.frame(Alter = tmp), type = "response")
+pander(cbind(Alter = tmp, `P(Ausfall)` = pred))
+```
+
+Laut dem Modell ist damit zu rechnen, dass vier von fünf Lüftern ausgefallen sind, wenn ihr Alter 25 Monate erreicht. Nach 30 Monaten beträgt die geschätzte Ausfallswahrscheinlichkeit schon über 95\%, nach 35 Monaten funktionieren Lüfter nur noch in Ausnahmefällen.

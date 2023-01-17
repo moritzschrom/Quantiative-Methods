@@ -1,0 +1,237 @@
+---
+title: "Bericht (für Fachkollegen)"
+author: "David Meyer"
+date: "31\\. Mai 2016"
+output: pdf_document
+---
+
+# Ausgangssituation
+
+Für einen IT-Händler sind die monatlichen Absatzzahlen von PCs für die
+Jahre 2015--2017 erhoben worden. Es ist ein Vorhersagemodell für
+Langfrist-Prognosen zu erstellen und die Entwicklung im Jahr 2018
+vorherzusagen.
+
+# Datenmanagement
+
+Die Daten wurden mit `scan()` eingelesen und in eine Zeitreihe umgewandelt:
+
+```{r}
+x = scan(text = "779  703  772  781  768  765 599 403  712  707  770  777
+                1014  929 1008 1025 1010  996 738 448 1053 1042 1010 1022
+                1048  973 1042 1059 1044 1030 572 382 1087 1076 1044 1056")
+ist = ts(x, start = c(2015,1), freq = 12)
+ist
+```
+
+Stichprobengröße, fehlende Werte:
+
+```{r}
+length(x)
+sum(is.na(x))
+```
+
+**Datensteckbrief:**
+
+Es liegt ein metrisches Merkmal mit 36 Beobachtungen (keine fehlenden Werte) 
+als Zeitreihe vor. Die Messungen erfolgten in den Perioden 2015 bis 2017 mit monatlicher Auflösung (12 Werte pro Jahr).
+ 
+# Deskriptive Analyse
+
+## Numerische Beschreibung
+
+```{r}
+summary(ist)
+```
+
+Der mittlere Absatz über den Beobachtungszeitraum beträgt rd. 868 Stück; das Minimum lag bei 382, das Maximum bei 1087 Stück.
+
+
+## Grafische Darstellung der Ist-Werte
+
+Das Zeitreihendiagramm sieht wie folgt aus:
+
+```{r out.width="0.7\\linewidth",fig.align="center"}
+plot(ist, main = "Monatliche Absatzzahlen von PCs (N = 36)")
+abline(h = mean(ist), lty = "dotted")
+```
+
+Die gestrichelte Gerade stellt den durchschnittlichen Absatz in den Jahren
+dar. Betrachtet man nun den Verlauf der Zeitreihe, fallen die periodisch
+auftretenden, starken Absatzeinbrüche jeweils zu Jahresmitte auf. Dies ist
+vermutlich auf das typische ``Sommerloch'' im Handel zurückzuführen. Ein
+kleinerer Einbruch könnte im Jänner zu beobachten sein (möglicherweise in
+Folge der vorgezogenen Käufe zu Weihnachten?). Des weiteren dürfte es
+generell einen Aufwärtstrend in den Absatzzahlen geben, mit einem stärkeren
+Sprung von 2015 auf 2016.
+
+## Trend und Saison
+
+Für eine nähere Betrachtung wird die Zeitreihe in Trend- und Saisonkomponente
+zerlegt und diese dargestellt:
+
+```{r}
+dec = decompose(ist)
+plot(dec)
+```
+
+Der vermutete Aufwärtstrend (mit Sprung vom 1. zum 2. Jahr) ist gut in der
+Trendkomponente zu erkennen, ebenso wie der Saisoneffekt. Betrachten wir die
+Saisonfigur genauer:
+
+```{r out.width="70%"}
+monthplot(dec$seasonal)
+```
+
+Bedingt durch den Saisoneffekt gibt es demnach in den Monaten Juli und vor
+allem August einen starken Umsatzeinbruch, dafür ist die erste Jahreshälfte
+(vor allem der Frühling) relativ stärker als beispielsweise der Herbst. 
+
+# Prognosemodell
+
+## Modellschätzung
+
+Für die Vorhersage wird ein Regressionsmodell geschätzt:
+
+```{r}
+t = time(ist)
+s = as.factor(cycle(ist))
+model = lm(ist ~ t + s)
+```
+
+Die Modellzusammenfassung lautet:
+
+```{r}
+summary(model)
+```
+
+Das Modell hat einen sehr hohen Erkärungswert von fast 87%. Achsenabschnitt und Trend sind signifikant, wie auch die Saisoneffekte im Juli und August. 
+
+Die Regressionsgleichung für den erwarteten Absatz, gegeben Zeit und Saison, lautet:
+
+    E(Ist|t,s) = -240721 + 119.87 t -88.66 (s == "Februar") -26.31 (s == "März") ...
+    
+(Zahlencodierung der Monate zwecks Klarheit durch Text ersetzt.)    
+In jedem Jahr
+steigt der durchschnittliche Absatz um rund 120 Stück, allerdings nach unten
+korrigiert durch die monatlichen Saisoneffekte. Insbesondere sind jene in
+Juli und August signifikant geringer als der Jänner-Wert (im
+Achsenabschnitt enthalten): im Juli beträgt der Korrekturfaktor -370 Stück, im August -606 Stück.
+
+## Diagnostik
+
+Vor einer Prognose ist die Gültigkeit der Modellannahmen zu
+überprüfen. Aufgrund des geringen Stichprobenumfangs ist zunächst jedenfalls
+die Normalverteilung der Residuen zu kontrollieren, dies erfolgt mit
+einem Q-Q-Plot gegen die theoretischen Werte der Normalverteilung
+(siehe Abbildung \ref{fig:qqnorm}).
+
+```{r qqnorm, echo = FALSE, out.width = "90%", fig.cap = "Q-Q-Plot der Residuen", fig.align = "center"}
+qqnorm(residuals(model))
+qqline(residuals(model))
+```
+
+Es ist eine starke Korrelation der Residuen mit den theoretischen
+normalverteilten Werten zu erkennen. Ein paar Punkte oben rechts weichen jedoch vom Schema ab.
+
+```{r resfitted, echo = FALSE, out.width = "90%", fig.width = 7, fig.height = 7, fig.align = "center", fig.cap="Streudiagramm der Residuen gegen die geschätzten Werte.", out.width="0.7\\textwidth"}
+plot(residuals(model) ~ fitted(model))
+```
+
+Des weiteren ist die korrekte Modellspezifikation durch ein
+Streudiagramm der Residuen gegen die geschätzten Werte zu überprüfen
+(siehe Abbildung \ref{fig:resfitted}). Bis auf ein paar Häufungspunkte sind keine auffälligen
+Strukturen im Streudiagramm zu erkennen, das lineare Modell dürfte die
+in den Daten vorhandene Information gut abdecken.
+
+```{r resid, echo = FALSE, out.width = "90%", fig.width = 7, fig.height = 7, fig.align = "center", fig.cap="Streudiagramm der Residuen gegen codelines.", out.width="0.7\\textwidth"}
+plot(residuals(model) ~ t)
+abline(h = 0)
+```
+
+Drittens ist die Varianzhomogenität der Residuen zu überprüfen. Dies erfolgt mit einem Diagramm der Residuen gegen die Zeit (siehe Abbildung \ref{fig:resid}). Die Residuen weisen auffällig hohe Veränderungen in den Sommemonaten 2015 und 2017 auf, die Abweichungen des Modells von den historischen Daten sind hier größer als im übrigen Zeitraum. Das Modell fängt den Saisoneffekt offenbar nicht ideal ein. Im übrigen scheint sich die Streuung nicht systematisch mit der Zeit zu verändern.
+
+
+## Prognose
+
+Für die Prognose des Folgejahres werden zunächst die Zukunftswerte der
+unabhängigen Variablen generiert:
+```{r}
+newdata = data.frame(t = seq(from = 2018, by = 1/12, length = 12), 
+                     s = as.factor(1:12))
+newdata
+```
+
+und für diese die Prognose erstellt:
+
+```{r}
+tmp = predict(model, newdata)
+pred = ts(tmp, start = c(2018, 1), frequency = 12)
+pred
+```
+
+In der grafischen Darstellung wird zusätzlich der Prognosekanal
+eingezeichnet:
+
+```{r}
+## Ist-Werte
+plot(ist,
+     main = "PC-Istabsatz 2015-2017, samt Prognose für 2018",
+     xlim = c(2015, 2019), ylim = c(300, 1500))
+
+## Erwartete Werte
+fit = ts(c(fitted(model), pred), start = start(ist), freq = frequency(ist))
+lines(fit, col = "red")
+
+## Prognoseintervalle
+conf = predict(model, newdata, interval = "prediction")
+
+## Unteres Band
+lwr = ts(conf[,2], start = 2018, freq = 12)
+lines(lwr, col = "black", lty = "dotted")
+
+## Oberes Band
+upr = ts(conf[,3], start = 2018, freq = 12)
+lines(upr, col = "black", lty = "dotted")
+```
+
+Die geschätzten Werte (rot) folgen in etwa dem Verlauf der Daten, mit deutlichen Abweichungen besonders in den ersten 2 Jahren. Durch den Sprung von Jahr 2015 zum Jahr 2016 ist die Schätzung des Trends verzerrt. Das Prognoseband zeigt eine große Schwankungsbreite und entsprechende Ungenauigkeit der Vorhersagen.
+
+**Variante:**
+
+Für die Prognose von Juli 2018 bis Juni 2019 werden zunächst die Zukunftswerte der
+unabhängigen Variablen generiert:
+
+```{r}
+newdata = data.frame(t = seq(from = 2018.5, by = 1/12, length = 12), 
+                     s = as.factor(c(7:12, 1:6)))
+newdata
+```
+
+und für diese die Prognose erstellt:
+
+```{r}
+tmp = predict(model, newdata, interval = "predict")
+pred = ts(tmp, start = c(2018, 7), frequency = 12)
+pred
+```
+
+In der grafischen Darstellung wird zusätzlich der Prognosekanal
+eingezeichnet:
+
+```{r}
+## Ist-Werte
+plot(ist,
+     main = "PC-Istabsatz 2015-2017, samt Prognose für 2018/19",
+     xlim = c(2015, 2020), ylim = c(300, 1800))
+
+## Erwartete Werte
+fit = ts(fitted(model), start = start(ist), freq = frequency(ist))
+lines(fit, col = "red")
+
+## Prognose
+lines(pred[,"fit"], col = "red")
+lines(pred[,"lwr"], col = "blue", lty = "dotted")
+lines(pred[,"upr"], col = "blue", lty = "dotted")
+
+```
