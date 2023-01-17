@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.1.15)  17 JAN 2023 17:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.1.15)  17 JAN 2023 17:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -507,259 +507,259 @@ Underfull \hbox (badness 1902) in paragraph at lines 208--211
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 240.
 [5] [6] [7]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-6-1.pdf, id=258, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-6-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-6-1.pdf  used on input line 465.
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-8-1.pdf, id=258, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-8-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-8-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-8-1.pdf  used on input line 469.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[8 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-6-1.pdf>] [9]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-10-1.pdf, id=273, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-10-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 552.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[10]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-10-2.pdf, id=279, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-10-2.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-10-2.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-10-2.pdf  used on input line 573.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[11 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-10-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-10-3.pdf, id=291, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-10-3.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-10-3.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-10-3.pdf  used on input line 594.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[12 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-10-2.pdf>] [13 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-10-3.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-12-1.pdf, id=315, 469.755pt x 325.215pt>
+[8 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-8-1.pdf>] [9]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-12-1.pdf, id=273, 469.755pt x 325.215pt>
 File: Cheat_Sheet_files/figure-latex/unnamed-chunk-12-1.pdf Graphic file (type pdf)
 <use Cheat_Sheet_files/figure-latex/unnamed-chunk-12-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-12-1.pdf  used on input line 692.
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-12-1.pdf  used on input line 556.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-12-2.pdf, id=316, 469.755pt x 325.215pt>
+[10]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-12-2.pdf, id=279, 469.755pt x 325.215pt>
 File: Cheat_Sheet_files/figure-latex/unnamed-chunk-12-2.pdf Graphic file (type pdf)
 <use Cheat_Sheet_files/figure-latex/unnamed-chunk-12-2.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-12-2.pdf  used on input line 700.
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-12-2.pdf  used on input line 577.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[14 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-12-1.pdf>] [15 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-12-2.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-14-1.pdf, id=339, 469.755pt x 325.215pt>
+[11 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-12-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-12-3.pdf, id=291, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-12-3.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-12-3.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-12-3.pdf  used on input line 598.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[12 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-12-2.pdf>] [13 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-12-3.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-14-1.pdf, id=315, 469.755pt x 325.215pt>
 File: Cheat_Sheet_files/figure-latex/unnamed-chunk-14-1.pdf Graphic file (type pdf)
 <use Cheat_Sheet_files/figure-latex/unnamed-chunk-14-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-14-1.pdf  used on input line 837.
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-14-1.pdf  used on input line 696.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[16]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-14-2.pdf, id=347, 469.755pt x 325.215pt>
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-14-2.pdf, id=316, 469.755pt x 325.215pt>
 File: Cheat_Sheet_files/figure-latex/unnamed-chunk-14-2.pdf Graphic file (type pdf)
 <use Cheat_Sheet_files/figure-latex/unnamed-chunk-14-2.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-14-2.pdf  used on input line 845.
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-14-2.pdf  used on input line 704.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[17 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-14-1.pdf>] [18 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-14-2.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-18-1.pdf, id=368, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-18-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-18-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-18-1.pdf  used on input line 946.
+[14 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-14-1.pdf>] [15 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-14-2.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-16-1.pdf, id=339, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-16-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-16-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-16-1.pdf  used on input line 841.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[19]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-19-1.pdf, id=375, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-19-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-19-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-19-1.pdf  used on input line 954.
+[16]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-16-2.pdf, id=347, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-16-2.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-16-2.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-16-2.pdf  used on input line 849.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[20 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-18-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-21-1.pdf, id=386, 469.755pt x 325.215pt>
+[17 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-16-1.pdf>] [18 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-16-2.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-21-1.pdf, id=368, 469.755pt x 325.215pt>
 File: Cheat_Sheet_files/figure-latex/unnamed-chunk-21-1.pdf Graphic file (type pdf)
 <use Cheat_Sheet_files/figure-latex/unnamed-chunk-21-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-21-1.pdf  used on input line 980.
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-21-1.pdf  used on input line 952.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[21 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-19-1.pdf>] [22 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-21-1.pdf>] [23] [24]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-29-1.pdf, id=416, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-29-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-29-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-29-1.pdf  used on input line 1190.
+[19]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-22-1.pdf, id=375, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-22-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-22-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-22-1.pdf  used on input line 960.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[25 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-29-1.pdf>] [26] [27]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-35-1.pdf, id=441, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-35-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-35-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-35-1.pdf  used on input line 1386.
+[20 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-21-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-24-1.pdf, id=386, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-24-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-24-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-24-1.pdf  used on input line 986.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[21 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-22-1.pdf>] [22 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-24-1.pdf>] [23] [24]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-33-1.pdf, id=416, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-33-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-33-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-33-1.pdf  used on input line 1198.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[25 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-33-1.pdf>] [26] [27]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-39-1.pdf, id=441, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-39-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-39-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-39-1.pdf  used on input line 1394.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [28]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-36-1.pdf, id=447, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-36-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-36-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-36-1.pdf  used on input line 1398.
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-40-1.pdf, id=447, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-40-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-40-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-40-1.pdf  used on input line 1406.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[29 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-35-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-37-1.pdf, id=458, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-37-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-37-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-37-1.pdf  used on input line 1412.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[30 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-36-1.pdf>] [31 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-37-1.pdf>] [32]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-41-1.pdf, id=484, 469.755pt x 325.215pt>
+[29 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-39-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-41-1.pdf, id=458, 469.755pt x 325.215pt>
 File: Cheat_Sheet_files/figure-latex/unnamed-chunk-41-1.pdf Graphic file (type pdf)
 <use Cheat_Sheet_files/figure-latex/unnamed-chunk-41-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-41-1.pdf  used on input line 1528.
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-41-1.pdf  used on input line 1420.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-42-1.pdf, id=485, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-42-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-42-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-42-1.pdf  used on input line 1549.
+[30 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-40-1.pdf>] [31 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-41-1.pdf>] [32]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-45-1.pdf, id=484, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-45-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-45-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-45-1.pdf  used on input line 1536.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[33 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-41-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-42-2.pdf, id=496, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-42-2.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-42-2.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-42-2.pdf  used on input line 1557.
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-46-1.pdf, id=485, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-46-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-46-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-46-1.pdf  used on input line 1557.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[34 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-42-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-42-3.pdf, id=506, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-42-3.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-42-3.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-42-3.pdf  used on input line 1565.
+[33 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-45-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-46-2.pdf, id=496, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-46-2.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-46-2.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-46-2.pdf  used on input line 1565.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[35 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-42-2.pdf>] [36 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-42-3.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-44-1.pdf, id=526, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-44-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-44-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-44-1.pdf  used on input line 1629.
+[34 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-46-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-46-3.pdf, id=506, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-46-3.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-46-3.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-46-3.pdf  used on input line 1573.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[37] [38 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-44-1.pdf>] [39]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-50-1.pdf, id=550, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-50-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-50-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-50-1.pdf  used on input line 1775.
+[35 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-46-2.pdf>] [36 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-46-3.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-49-1.pdf, id=526, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-49-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-49-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-49-1.pdf  used on input line 1639.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[40 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-50-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-52-1.pdf, id=562, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-52-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-52-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-52-1.pdf  used on input line 1833.
+[37] [38 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-49-1.pdf>] [39]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-55-1.pdf, id=550, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-55-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-55-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-55-1.pdf  used on input line 1785.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[41 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-52-1.pdf>] [42]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-59-1.pdf, id=578, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-59-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-59-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-59-1.pdf  used on input line 1974.
+[40 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-55-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-57-1.pdf, id=562, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-57-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-57-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-57-1.pdf  used on input line 1843.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[43] [44 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-59-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-63-1.pdf, id=594, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-63-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-63-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-63-1.pdf  used on input line 2062.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[45]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-64-1.pdf, id=601, 469.755pt x 325.215pt>
+[41 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-57-1.pdf>] [42]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-64-1.pdf, id=578, 469.755pt x 325.215pt>
 File: Cheat_Sheet_files/figure-latex/unnamed-chunk-64-1.pdf Graphic file (type pdf)
 <use Cheat_Sheet_files/figure-latex/unnamed-chunk-64-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-64-1.pdf  used on input line 2083.
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-64-1.pdf  used on input line 1984.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[46 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-63-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-65-1.pdf, id=612, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-65-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-65-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-65-1.pdf  used on input line 2095.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[47 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-64-1.pdf>] [48 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-65-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-68-1.pdf, id=634, 469.755pt x 325.215pt>
+[43] [44 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-64-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-68-1.pdf, id=594, 469.755pt x 325.215pt>
 File: Cheat_Sheet_files/figure-latex/unnamed-chunk-68-1.pdf Graphic file (type pdf)
 <use Cheat_Sheet_files/figure-latex/unnamed-chunk-68-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-68-1.pdf  used on input line 2178.
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-68-1.pdf  used on input line 2072.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[49]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-69-1.pdf, id=642, 469.755pt x 325.215pt>
+[45]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-69-1.pdf, id=601, 469.755pt x 325.215pt>
 File: Cheat_Sheet_files/figure-latex/unnamed-chunk-69-1.pdf Graphic file (type pdf)
 <use Cheat_Sheet_files/figure-latex/unnamed-chunk-69-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-69-1.pdf  used on input line 2190.
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-69-1.pdf  used on input line 2093.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[50 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-68-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-70-1.pdf, id=653, 469.755pt x 325.215pt>
+[46 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-68-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-70-1.pdf, id=612, 469.755pt x 325.215pt>
 File: Cheat_Sheet_files/figure-latex/unnamed-chunk-70-1.pdf Graphic file (type pdf)
 <use Cheat_Sheet_files/figure-latex/unnamed-chunk-70-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-70-1.pdf  used on input line 2205.
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-70-1.pdf  used on input line 2105.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[51 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-69-1.pdf>]
-
-LaTeX Warning: Reference `fig:resid' on page 52 undefined on input line 2209.
-
-[52 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-70-1.pdf>]
-LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 2267.
-
-LaTeX Font Warning: Font shape `T1/lmtt/bx/it' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/sl' tried instead on input line 2267.
-
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-73-1.pdf, id=674, 469.755pt x 325.215pt>
+[47 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-69-1.pdf>] [48 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-70-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-73-1.pdf, id=634, 469.755pt x 325.215pt>
 File: Cheat_Sheet_files/figure-latex/unnamed-chunk-73-1.pdf Graphic file (type pdf)
 <use Cheat_Sheet_files/figure-latex/unnamed-chunk-73-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-73-1.pdf  used on input line 2289.
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-73-1.pdf  used on input line 2188.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[53] [54 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-73-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-76-1.pdf, id=691, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-76-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-76-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-76-1.pdf  used on input line 2373.
+[49]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-74-1.pdf, id=642, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-74-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-74-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-74-1.pdf  used on input line 2200.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[55]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-78-1.pdf, id=697, 469.755pt x 325.215pt>
+[50 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-73-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-75-1.pdf, id=653, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-75-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-75-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-75-1.pdf  used on input line 2215.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[51 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-74-1.pdf>]
+
+LaTeX Warning: Reference `fig:resid' on page 52 undefined on input line 2219.
+
+[52 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-75-1.pdf>]
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 2277.
+
+LaTeX Font Warning: Font shape `T1/lmtt/bx/it' in size <10> not available
+(Font)              Font shape `T1/lmtt/b/sl' tried instead on input line 2277.
+
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-78-1.pdf, id=674, 469.755pt x 325.215pt>
 File: Cheat_Sheet_files/figure-latex/unnamed-chunk-78-1.pdf Graphic file (type pdf)
 <use Cheat_Sheet_files/figure-latex/unnamed-chunk-78-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-78-1.pdf  used on input line 2405.
-(pdftex.def)             Requested size: 328.82626pt x 227.64894pt.
-[56 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-76-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-79-1.pdf, id=709, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-79-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-79-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-79-1.pdf  used on input line 2417.
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-78-1.pdf  used on input line 2299.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[57 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-78-1.pdf> <./Cheat_Sheet_files/figure-latex/unnamed-chunk-79-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-80-1.pdf, id=726, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-80-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-80-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-80-1.pdf  used on input line 2429.
+[53] [54 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-78-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-81-1.pdf, id=691, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-81-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-81-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-81-1.pdf  used on input line 2383.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[58 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-80-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-83-1.pdf, id=738, 469.755pt x 325.215pt>
+[55]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-83-1.pdf, id=697, 469.755pt x 325.215pt>
 File: Cheat_Sheet_files/figure-latex/unnamed-chunk-83-1.pdf Graphic file (type pdf)
 <use Cheat_Sheet_files/figure-latex/unnamed-chunk-83-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-83-1.pdf  used on input line 2516.
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-83-1.pdf  used on input line 2415.
+(pdftex.def)             Requested size: 328.82626pt x 227.64894pt.
+[56 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-81-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-84-1.pdf, id=709, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-84-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-84-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-84-1.pdf  used on input line 2427.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[59] [60 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-83-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-85-1.pdf, id=758, 469.755pt x 325.215pt>
+[57 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-83-1.pdf> <./Cheat_Sheet_files/figure-latex/unnamed-chunk-84-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-85-1.pdf, id=726, 469.755pt x 325.215pt>
 File: Cheat_Sheet_files/figure-latex/unnamed-chunk-85-1.pdf Graphic file (type pdf)
 <use Cheat_Sheet_files/figure-latex/unnamed-chunk-85-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-85-1.pdf  used on input line 2621.
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-85-1.pdf  used on input line 2439.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[58 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-85-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-88-1.pdf, id=738, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-88-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-88-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-88-1.pdf  used on input line 2526.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[59] [60 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-88-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-90-1.pdf, id=758, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-90-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-90-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-90-1.pdf  used on input line 2631.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 
-LaTeX Warning: Reference `fig:barAusfall' on page 61 undefined on input line 2624.
+LaTeX Warning: Reference `fig:barAusfall' on page 61 undefined on input line 2634.
 
-[61 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-85-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-86-1.pdf, id=771, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-86-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-86-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-86-1.pdf  used on input line 2633.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-87-1.pdf, id=772, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-87-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-87-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-87-1.pdf  used on input line 2646.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[62 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-86-1.pdf>] [63 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-87-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-89-1.pdf, id=794, 469.755pt x 325.215pt>
-File: Cheat_Sheet_files/figure-latex/unnamed-chunk-89-1.pdf Graphic file (type pdf)
-<use Cheat_Sheet_files/figure-latex/unnamed-chunk-89-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-89-1.pdf  used on input line 2728.
-(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[64 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-89-1.pdf>]
-<Cheat_Sheet_files/figure-latex/unnamed-chunk-91-1.pdf, id=808, 469.755pt x 325.215pt>
+[61 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-90-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-91-1.pdf, id=771, 469.755pt x 325.215pt>
 File: Cheat_Sheet_files/figure-latex/unnamed-chunk-91-1.pdf Graphic file (type pdf)
 <use Cheat_Sheet_files/figure-latex/unnamed-chunk-91-1.pdf>
-Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-91-1.pdf  used on input line 2781.
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-91-1.pdf  used on input line 2643.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-92-1.pdf, id=772, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-92-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-92-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-92-1.pdf  used on input line 2656.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[62 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-91-1.pdf>] [63 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-92-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-94-1.pdf, id=794, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-94-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-94-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-94-1.pdf  used on input line 2738.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[64 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-94-1.pdf>]
+<Cheat_Sheet_files/figure-latex/unnamed-chunk-96-1.pdf, id=808, 469.755pt x 325.215pt>
+File: Cheat_Sheet_files/figure-latex/unnamed-chunk-96-1.pdf Graphic file (type pdf)
+<use Cheat_Sheet_files/figure-latex/unnamed-chunk-96-1.pdf>
+Package pdftex.def Info: Cheat_Sheet_files/figure-latex/unnamed-chunk-96-1.pdf  used on input line 2791.
 (pdftex.def)             Requested size: 234.87692pt x 162.6071pt.
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 2795.
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 2805.
 (/Users/moritzschrom/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [65 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-91-1.pdf>] (./Cheat_Sheet.aux)
+) [65 <./Cheat_Sheet_files/figure-latex/unnamed-chunk-96-1.pdf>] (./Cheat_Sheet.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -775,7 +775,7 @@ Here is how much of TeX's memory you used:
  14 hyphenation exceptions out of 8191
  72i,7n,77p,506b,584s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}</Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtko10.pfb></Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></Users/moritzschrom/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Cheat_Sheet.pdf (65 pages, 584042 bytes).
+Output written on Cheat_Sheet.pdf (65 pages, 584159 bytes).
 PDF statistics:
  932 PDF objects out of 1000 (max. 8388607)
  746 compressed objects within 8 object streams

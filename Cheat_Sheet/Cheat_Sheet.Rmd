@@ -82,7 +82,7 @@ Die `scan()` Funktion in *R* ließt Text (entweder in Form einer String-Variable
 
 Angenommen die Daten liegen in Form einer Textdatei `browser.txt` vor:
 
-```
+```{text}
 Liste an Browsern
 Firefox Firefox IE Firefox IE IE IE Firefox IE
 IE Chrome IE Chrome Firefox Firefox Chrome Firefox IE
@@ -117,7 +117,7 @@ Oft haben wir es mit tabellarischen Daten zu tun, welche mehrere Merkmale beinha
 
 Angenommen, die Daten liegen in Form einer CSV-Datei `bugfixes.csv` vor:
 
-```
+```{text}
 "dauer" "programmierer" "bugtyp"
 120 "Eckkrammer" "NA"
 185 "Fischer" "Reporting"
@@ -303,7 +303,7 @@ Es liegt eine Stichprobe mit 22 Beobachtungen, davon ein fehlender Wert. Erhoben
 
 Die Daten liegen als Textdatei `bugfix.txt` vor:
 
-```
+```{text}
 66 174 188 161 157
 178 143 184 159 178
 157 183 152 174 189
@@ -386,7 +386,7 @@ Für 21 Bugs wurden vier metrische Merkmale erhoben:
 Ziel ist der Nachweis eines möglichen (linearen) Zusammenhangs zwischen der Behebungsdauer und der Programmgröße (Codezeilenanzahl)
 
 Es liegt erneut ein Datensatz zum Thema Bugfixes als CSV-Datei `bugfixes2.csv` vor:
-```
+```{text}
 "dauer" "codelines" "usecases" "alter"
 120 183000 49 35
 174 386000 86 44
@@ -589,7 +589,7 @@ Es gilt zu untersuchen, ob es einen Unterschied zwischen den Programmieren gibt?
 
 Die Daten liegen erneut als CSV-Datei `bugfixes3.csv` vor:
 
-```
+```{text}
 "dauer" "programmierer" "bugtyp"
 120 "Eckkrammer" "GUI"
 174 "Meyer" "DB"
