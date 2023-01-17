@@ -134,6 +134,39 @@ head(daten)
 
 \newpage
 
+# Unterschiedliche Tests
+
+## Chi-squared Test
+
+Mit dem Chi-squared Test können Daten auf ihre Gleichverteilung getestet werden.
+
+Siehe [RDocumentation - chisq.test: Pearson's Chi-squared Test for Count Data](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/chisq.test)
+
+## t-Test
+
+Überprüft Daten auf ihre zentrale Gleichverteilung ums arithmethische Mittel. Bei Daten mit großer Streuung (durch Ausreißer) sollte der Wilcoxon Test herangezogen werden, da er robuster ist.
+
+Siehe [RDocumentation - t.test: Student's t-Test](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test)
+
+## Wilcoxon Test
+
+Überprüft Daten auf ihre zentrale Gleichverteilung um den Median und stellt damit eine robuste Alternative zum t-Test dar.
+
+Siehe [RDocumentation - wilcox.test: Wilcoxon Rank Sum and Signed Rank Tests](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/wilcox.test)
+
+## Medmed (Median Absolute Deviation)
+
+Ein robustes Streuungsmaß. Der Median der Abweichungen zum Median.
+
+Siehe [RDocumentation - mad: Median Absolute Deviation](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/mad)
+
+## Levene Test
+
+Überprüft die Varianzhomogenität, und sollte durchgeführt werden bevor eine Varianzanalyse angewendet wird. Ist er nicht signifikant, kann mit der Varianzanalyse fortgefahren werden.
+
+Siehe [RDocumentation - leveneTest: Levene's Test](https://www.rdocumentation.org/packages/car/versions/3.1-1/topics/leveneTest)
+
+
 # Eine kategoriale Variable
 
 Es liegt eine Stichprobe mit 60 Beobachtungen und einem kategorialen Merkmal mit den Ausprägungen: _Firefox_, _IE_, _Chrome_, _Opera_ und _Safari_ vor. Es soll untersucht werden, ob die Kateogiren gleichverteilt sind.
